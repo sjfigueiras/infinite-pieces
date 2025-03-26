@@ -1,38 +1,5 @@
 import * as Tone from 'tone';
 
-const samplerConfig = {
-    samples: {
-        baseUrl: '/samples/vsco2-ce/upright-piano/',
-        urls: {
-          "A0": "a0.wav",
-          "C#1": "csharp1.wav",
-          "F1": "f1.wav",
-          "C#2": "csharp2.wav",
-          "F2": "f2.wav",
-          "A2": "a2.wav",
-          "C#3": "csharp3.wav",
-          "F3": "f3.wav",
-          "A3": "a3.wav",
-          "C#4": "csharp4.wav",
-          "F4": "f4.wav",
-          "A4": "a4.wav",
-          "C#5": "csharp5.wav",
-          "F5": "f5.wav",
-          "A5": "a5.wav",
-          "C#6": "csharp6.wav",
-          "F6": "f6.wav",
-          "A6": "a6.wav",
-          "C#7": "csharp7.wav",
-          "F7": "f7.wav",
-          "A7": "a7.wav",
-          "C8": "c8.wav"
-        },
-    },
-  onload: function () {
-    Tone.start();
-  },
-};
-
 const uprightMap = {
     "A0": "a0.wav",
     "C#1": "csharp1.wav",
@@ -56,6 +23,16 @@ const uprightMap = {
     "F7": "f7.wav",
     "A7": "a7.wav",
     "C8": "c8.wav"
+};
+
+const samplerConfig = {
+    samples: {
+        baseUrl: '/samples/vsco2-ce/upright-piano/',
+        urls: uprightMap,
+    },
+  onload: async function () {
+    return Tone.start();
+  },
 };
 
 const sampler = new Tone.Sampler(
@@ -161,10 +138,10 @@ interface LFOAnalyser {
     name: string;
 }
 
-export const registeredLFOs: LFOAnalyser[] = [];
+export const modulators: LFOAnalyser[] = [];
 
-function registerLFO (name: string, lfo: Tone.LFO) {
-  registeredLFOs.push({
+function registerModultor (name: string, lfo: Tone.LFO) {
+  modulators.push({
     name,
     analyser: createAnalyser(lfo),
     lfo
@@ -172,7 +149,7 @@ function registerLFO (name: string, lfo: Tone.LFO) {
 }
 
 function createAnalyser (targetLfo: Tone.LFO) {
-  const analyser = new Tone.Analyser("waveform")
+  const analyser = new Tone.Analyser("waveform");
   targetLfo.connect(analyser);
   return analyser;
 } 
@@ -197,9 +174,9 @@ const structureLFO = new Tone.LFO({frequency: 0.5, min: 0, max: 1});
 structureLFO.connect(pingPong.wet);
 structureLFO.start();
 
-registerLFO('Delay Frequency', delayFrequencyLFO);
-registerLFO('Sampler Volume', samplerVolumeLFO);
-registerLFO('Structural', structureLFO);
+registerModultor('Delay Frequency', delayFrequencyLFO);
+registerModultor('Sampler Volume', samplerVolumeLFO);
+registerModultor('Structural', structureLFO);
 
 /**
  * TODO:

@@ -7,25 +7,20 @@ const Player = () => {
   const [mute, setMute] = useState<Tone.Player | null>(null);
   
   const onVolumeChange = () => {
-    debugger;
     const toneDestination = Tone.getDestination();
     // toneDestination.mute = controls.muted;
     // toneDestination.output.gain.value = controls.volume;
   }
 
   const onPlay = async () => {
-    await Tone.start();
     const transport = Tone.getTransport().start();
+    await Tone.start();
 
     const Entusiasmo = await import('./pieces/entusiasmo');
 
     await Tone.loaded();
 
-    console.log(transport.state)
-
     console.log(Entusiasmo);
-    // document.querySelector('#tone-load-feedback')!.innerText =
-    //   'Audio files loaded!';
     // drawAnalysers(registeredLFOs);
   }
 
