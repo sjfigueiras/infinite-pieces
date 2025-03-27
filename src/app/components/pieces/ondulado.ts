@@ -1,25 +1,15 @@
 import * as Tone from 'tone';
-import { getRandomBetween, scheduleRandomRepeat } from './utils';
-import { uprightMap, uprightMapNotes } from './sample-maps/upright-piano';
+import {
+  getRandomBetween,
+  scheduleRandomRepeat,
+  Modulator,
+  registerModulator,
+} from '../../utils/tone-utils';
+import { createUprightSampler } from '../../utils/sampler-utils';
+import { Piece } from './types';
 
-const samplerConfig = {
-    samples: uprightMap,
-    onload: async function () {
-        return Tone.start();
-    },
-};
-
-const sampler = new Tone.Sampler(
-  uprightMapNotes,
-  samplerConfig.onload,
-  '/samples/vsco2-ce/upright-piano/'
-);
-
-const samplerUntouched = new Tone.Sampler(
-  uprightMapNotes,
-  samplerConfig.onload,
-  '/samples/vsco2-ce/upright-piano/'
-);
+const layerA = createUprightSampler();
+const layerB = createUprightSampler();
 
 /**
  * Composición
@@ -34,19 +24,19 @@ const bajos = ['C1', 'F1'];
 
 melodia.forEach(function (nota, i) {
     scheduleRandomRepeat(function (time) {
-        sampler.triggerAttack(nota, time);
+        layerA.triggerAttack(nota, time);
     }, 30, 30, getRandomBetween(10, 35));
 });
 
 texturas.forEach(function (nota, i) {
     scheduleRandomRepeat(function (time) {
-        sampler.triggerAttack(nota, time);
+        layerA.triggerAttack(nota, time);
     }, 1, 10, getRandomBetween(10, 15));
 });
 
 bajos.forEach(function (nota, i) {
     scheduleRandomRepeat(function (time) {
-        samplerUntouched.triggerAttack(nota, time);
+        layerB.triggerAttack(nota, time);
     }, 20, 0, getRandomBetween(0, 40));
 });
 
@@ -61,27 +51,7 @@ const EQ = new Tone.EQ3({ highFrequency: 8000, high: -12 });
  * Extract: Analysers
  */
 
-interface Modulator {
-    analyser: Tone.Analyser;
-    lfo: Tone.LFO;
-    name: string;
-}
-
 export const modulators: Modulator[] = [];
-
-function registerModultor(name: string, lfo: Tone.LFO) {
-    modulators.push({
-        name,
-        analyser: createAnalyser(lfo),
-        lfo
-    });
-}
-
-function createAnalyser(targetLfo: Tone.LFO) {
-    const analyser = new Tone.Analyser("waveform");
-    targetLfo.connect(analyser);
-    return analyser;
-}
 
 /**
  * LFOs
@@ -96,24 +66,30 @@ delayFrequencyLFO.connect(delayLFO.frequency);
 delayFrequencyLFO.start();
 
 const samplerVolumeLFO = new Tone.LFO({ type: "square", frequency: 0.001, min: -16, max: 0 });
-samplerVolumeLFO.connect(sampler.volume);
+samplerVolumeLFO.connect(layerA.volume);
 samplerVolumeLFO.start();
 
 const structureLFO = new Tone.LFO({ frequency: 0.5, min: 0, max: 1 });
 structureLFO.connect(pingPong.wet);
 structureLFO.start();
 
-registerModultor('Delay Frequency', delayFrequencyLFO);
-registerModultor('Sampler Volume', samplerVolumeLFO);
-registerModultor('Structural', structureLFO);
+registerModulator(modulators, 'Delay Frequency', delayFrequencyLFO);
+registerModulator(modulators, 'Sampler Volume', samplerVolumeLFO);
+registerModulator(modulators, 'Structural', structureLFO);
 
 /**
  * Sends
  */
-sampler.connect(pingPong);
+layerA.connect(pingPong);
 pingPong.connect(freeverb);
 freeverb.connect(EQ)
 EQ.toDestination();
 
-// dist.connect(samplerUntouched);
-samplerUntouched.toDestination();
+layerB.toDestination();
+
+const ondulado: Piece = {
+    title: 'Ondulado',
+    modulators,
+}
+
+export default ondulado;

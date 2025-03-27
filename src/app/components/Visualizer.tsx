@@ -1,37 +1,32 @@
 'use client';
-import Player from "./Player";
-import None from './sketches/None';
-import { useEffect, useState } from "react";
-import { Piece } from "./pieces/types";
-import { defaultPiece, getPieceMetadataByKey } from "./pieces/catalog";
-import { PieceMetadata } from "./pieces/catalog";
 
-export default function Visualizer({ pieceKey }: { pieceKey?: PieceMetadata['key'] }) {
-  const [loadedPiece, setLoadedPiece] = useState<Piece | null>(null);
-  const pieceBasePath = './pieces/';
-  const [pieceMetadata, setPiecemetadata] = useState<PieceMetadata>(defaultPiece());
+import { Piece, loadPiece } from "./pieces/types";
+import { useEffect, useState } from "react";
+import None from './sketches/None';
+import Player from "./Player";
+
+export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
+  const [loadedPiece, setLoadedPiece] = useState<Piece | undefined>(undefined);
 
   useEffect(() => {
-    const loadPiece = async () => {
-      /**
-       * Sanitize the input parameter
-       */
-      console.log({pieceKey, pieceMetadata});
-      if (pieceMetadata.key !== pieceKey) {
-        let newPieceMetadata = getPieceMetadataByKey(pieceKey);
-        console.log(pieceMetadata);
-        const piece = await import(pieceBasePath + newPieceMetadata.key);
-        setLoadedPiece(piece);
-        setPiecemetadata(pieceMetadata);
+    const loadPieceEffect = async () => {
+      console.log({pieceTitle, loadedPiece});
+      if (pieceTitle && !loadedPiece) {
+        try {
+          const pieceEntry = await loadPiece(pieceTitle);
+          setLoadedPiece(pieceEntry);
+        } catch (error) {
+          console.error(`Error loading piece with key "${pieceTitle}":`, error); // Improved error logging
+        }
       }
-    }
-    loadPiece();
-  });
+    };
+    loadPieceEffect();
+  }, [pieceTitle, loadedPiece]);
 
   return (
     <div>
       <main>
-        <None />
+        <None piece={loadedPiece} />
       </main>
       <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
         {

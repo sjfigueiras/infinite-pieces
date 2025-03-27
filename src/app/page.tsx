@@ -2,5 +2,5 @@
 import Visualizer from "./components/Visualizer";
 
 export default function Home() {
-  return <Visualizer />
+  return <Visualizer pieceTitle="entusiasmo"/>
 }
