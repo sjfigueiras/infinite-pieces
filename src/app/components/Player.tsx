@@ -1,18 +1,45 @@
 'use client';
 import * as Tone from "tone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Player = () => {
   // const [player, setPlayer] = useState<Tone.Player | null>(null);
-  const [mute, setMute] = useState<Tone.Player | null>(null);
+  const [muted, setMuted] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(1);
+  const [dbValue, setDbValue] = useState(Tone.gainToDb(1));
+
+  useEffect(() => {
+    Tone.getDestination().mute = muted;
+  }, [muted])
+
+  useEffect(() => {
+    /**
+     * We have to convert Gain (0.0-1.0) to
+     * DBFS (-Infinite-0) before passing the
+     * volume change to Tone.
+     */
+    const gainToDb = Tone.gainToDb(volume);
+    console.log(gainToDb);
+    Tone.getDestination().volume.value = gainToDb;
+    setDbValue(gainToDb);
+  }, [volume])
   
-  const onVolumeChange = () => {
+  const onVolumeChange = (event: React.ChangeEvent<HTMLAudioElement>) => {
     const toneDestination = Tone.getDestination();
+    console.log(event.target.volume);
+    console.log(event.target.muted);
+  
+    const volumeChanged = event.target.volume !== volume;
+
+    volumeChanged
+      ? setVolume(event.target.volume)
+      : setMuted(event.target.muted);
     // toneDestination.mute = controls.muted;
     // toneDestination.output.gain.value = controls.volume;
   }
 
   const onPlay = async () => {
+    Tone.getDestination().mute = false;
     const transport = Tone.getTransport().start();
     await Tone.start();
 
@@ -28,19 +55,19 @@ const Player = () => {
     Tone.getTransport().stop();
     Tone.getDestination().mute = true;
 
-    // For now, force student to reload page after stopping
-    // so we don't have to deal with disposing nodes and weird "restart" behavior
-    const controlsContainer = document.getElementById('controls-container')!;
-    // controlsContainer.removeChild(controls);
+    // // For now, force student to reload page after stopping
+    // // so we don't have to deal with disposing nodes and weird "restart" behavior
+    // const controlsContainer = document.getElementById('controls-container')!;
+    // // controlsContainer.removeChild(controls);
 
-    const reloadButton = document.createElement('button');
-    reloadButton.innerText = 'Refresh';
+    // const reloadButton = document.createElement('button');
+    // reloadButton.innerText = 'Refresh';
 
-    reloadButton.addEventListener('click', () => {
-      window.location.reload();
-    });
+    // reloadButton.addEventListener('click', () => {
+    //   window.location.reload();
+    // });
 
-    controlsContainer.append(reloadButton);
+    // controlsContainer.append(reloadButton);
   }
 
   const AUTO_PLAYBACK_KEY_NAME = 'InfinitePieces.Settings.PlayAutomatically';
@@ -142,15 +169,15 @@ const Player = () => {
           onVolumeChange={onVolumeChange}
         ></audio>
       </section>
-      <section>
+      {/* <section>
         <input
           type="checkbox"
           id="automatic-play-checkbox"
           name="automatic-play-checkbox"
         />
         <label htmlFor="automatic-play-checkbox">Try to play automatically on page load</label>
-      </section>
-      <p id="tone-load-feedback"></p>
+      </section> */}
+      {/* <p id="tone-load-feedback"></p> */}
       <section id="lfo-container" />
     </div>
   );

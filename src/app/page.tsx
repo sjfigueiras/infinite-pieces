@@ -8,7 +8,7 @@ export default function Home() {
       <main>
         <None />
       </main>
-      <footer className="inset-x-0 bottom-0 row-start-3 flex gap-[24px] flex-wrap items-center justify-center absolute">
+      <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
         <Player />
       </footer>
     </div>
