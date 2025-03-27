@@ -1,12 +1,21 @@
 'use client';
 import * as Tone from "tone";
 import { useEffect, useState } from "react";
+import { Piece } from "./pieces/types";
 
-const Player = () => {
+export interface PlayerProps {
+  piece: Piece;
+}
+
+const Player = ({piece}: PlayerProps) => {
   // const [player, setPlayer] = useState<Tone.Player | null>(null);
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
   const [dbValue, setDbValue] = useState(Tone.gainToDb(1));
+
+  useEffect(() => {
+    console.log({piece});
+  }, [piece]);
 
   useEffect(() => {
     Tone.getDestination().mute = muted;
@@ -43,11 +52,10 @@ const Player = () => {
     const transport = Tone.getTransport().start();
     await Tone.start();
 
-    const Entusiasmo = await import('./pieces/entusiasmo');
+    // const Entusiasmo = await import('./pieces/entusiasmo');
 
     await Tone.loaded();
 
-    console.log(Entusiasmo);
     // drawAnalysers(registeredLFOs);
   }
 
@@ -78,11 +86,13 @@ const Player = () => {
     const automaticPlaybackCheckbox = document.getElementById(
       'automatic-play-checkbox'
     ) as HTMLInputElement;
+
     if (shouldPlayAutomatically) {
       automaticPlaybackCheckbox.checked = true;
       const controls = document.getElementById('controls') as HTMLAudioElement;
       controls.play();
     }
+
     automaticPlaybackCheckbox.addEventListener('change', () => {
       localStorage.setItem(
         AUTO_PLAYBACK_KEY_NAME,
