@@ -1,7 +1,8 @@
 'use client';
 import { Piece } from "../pieces/types";
 import { useEffect, useRef } from "react";
-import canvasSketch from 'canvas-sketch';
+import canvasSketch, { SketchProps } from 'canvas-sketch';
+import * as Tone from 'tone';
 
 const None = ({piece}: {piece?: Piece}) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -14,13 +15,6 @@ const None = ({piece}: {piece?: Piece}) => {
         scaleToView: true,
         units: 'in',
     };
-    
-    interface SketchContext {
-        context: any;
-        width: number;
-        height: number;
-        playhead: number;
-    }
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -28,10 +22,26 @@ const None = ({piece}: {piece?: Piece}) => {
         }
     }, []);
 
+    const modulators = piece?.modulators;
+    const signal = modulators?.[0]?.signal;
+    console.log({signal});
+
+    /**
+     * TODO: Make the Modulator values available to the Sketch.
+     */
     const sketch = () => {
-        return ({ context, width, height, playhead  }: SketchContext) => {
+
+        return ({ context, width, height, time  }: SketchProps) => {
             // Margin in inches
             const margin = 1 / 4;
+
+            // Obtén el valor actual del LFO desde el Signal
+            const lfoValue = signal?.value || 0;
+            console.log(lfoValue);
+
+            // Usa el valor del LFO en el sketch
+            const x = (lfoValue + 1) / 2 * width; // Mapea el valor del LFO (-1 a 1) al ancho del canvas
+            const y = (1 - (lfoValue + 1) / 2) * height; // Mapea el valor del LFO a la altura del canvas
 
             // Off-white background
             context.fillStyle = 'hsl(0, 0%, 98%)';
@@ -45,10 +55,14 @@ const None = ({piece}: {piece?: Piece}) => {
             // Fill rectangle
             context.fillStyle = fill;
             context.fillRect(margin, margin, width - margin * 2, height - margin * 2);
+
+            // Dibuja un círculo basado en el valor del LFO
+            context.beginPath();
+            context.arc(x, y, 10, 0, Math.PI * 2);
+            context.fillStyle = 'black';
+            context.fill();
         };
     };
-
-    // canvasSketch(sketch, settings);
 
     return (
         <section>

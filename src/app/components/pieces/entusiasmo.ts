@@ -80,20 +80,32 @@ delayLFO.connect(pingPong.delayTime);
 delayLFO.start();
 
 const delayFrequencyLFO = new Tone.LFO({frequency: 0.001, min: 0, max: 0.001});
+
+const delayLFOSignal = new Tone.Signal(0);
+delayFrequencyLFO.connect(delayLFOSignal);
+
 delayFrequencyLFO.connect(delayLFO.frequency); 
 delayFrequencyLFO.start();
 
 const samplerVolumeLFO = new Tone.LFO({ type: "square", frequency: 0.001, min: -16, max: 0 });
+
+const samplerVolumeLFOSignal = new Tone.Signal(0);
+samplerVolumeLFO.connect(samplerVolumeLFOSignal);
+
 samplerVolumeLFO.connect(layerA.volume);
 samplerVolumeLFO.start();
 
 const structureLFO = new Tone.LFO({frequency: 0.5, min: 0, max: 1});
+
+const structureLFOLFOSignal = new Tone.Signal(0);
+structureLFO.connect(structureLFOLFOSignal);
+
 structureLFO.connect(pingPong.wet);
 structureLFO.start();
 
-registerModulator(modulators, 'Delay Frequency', delayFrequencyLFO);
-registerModulator(modulators, 'Sampler Volume', samplerVolumeLFO);
-registerModulator(modulators, 'Structural', structureLFO);
+registerModulator(modulators, 'Delay Frequency', delayFrequencyLFO, delayLFOSignal);
+registerModulator(modulators, 'Sampler Volume', samplerVolumeLFO, samplerVolumeLFOSignal);
+registerModulator(modulators, 'Structural', structureLFO, structureLFOLFOSignal);
 
 /**
  * Sends

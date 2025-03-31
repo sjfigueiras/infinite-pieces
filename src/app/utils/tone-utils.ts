@@ -8,6 +8,7 @@ export interface Modulator {
   analyser: Tone.Analyser;
   lfo: Tone.LFO;
   name: string;
+  signal: Tone.Signal;
 }
 
 export function scheduleRandomRepeat(
@@ -32,11 +33,61 @@ export function createAnalyser(targetLfo: Tone.LFO): Tone.Analyser {
 export function registerModulator(
   modulators: Modulator[],
   name: string,
-  lfo: Tone.LFO
+  lfo: Tone.LFO,
+  signal: Tone.Signal,
 ): void {
   modulators.push({
     name,
     analyser: createAnalyser(lfo),
     lfo,
+    signal,
   });
 }
+
+export const drawAnalysers = (registeredLFOs: any) => {
+  function draw(ctx: any, canvas: any, analyser: any) {
+    requestAnimationFrame(() => draw(ctx, canvas, analyser));
+    const values = analyser.getValue();
+
+    // Limpiar canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff0077';
+    ctx.lineWidth = 2;
+
+    // Dibujar la forma de onda
+    for (let i = 0; i < values.length; i++) {
+      const x = (i / values.length) * canvas.width;
+      const y = (1 - (values[i] +1) / 2) * canvas.height;
+      if (i === 0) {
+        ctx.moveTo(x, y );
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+
+    ctx.stroke();
+  }
+
+  const lfoContainer = document.getElementById("lfo-container")!;
+  registeredLFOs.length > 0
+  && lfoContainer.appendChild(document.createTextNode("LFOs")) 
+  && lfoContainer.appendChild(document.createElement("br"))
+  && lfoContainer.appendChild(document.createElement("br"));
+
+  registeredLFOs.forEach((registeredLFO: any, i: number) => {
+    // Configurar canvas
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("id", `anaylser-node-${i}`);
+    canvas.setAttribute("style", "background-color: white");
+
+    lfoContainer.appendChild(document.createTextNode(registeredLFO.name));
+    lfoContainer.appendChild(canvas);
+
+    const ctx = canvas.getContext("2d");
+    canvas.width = 200;
+    canvas.height = 200;
+
+    draw(ctx, canvas, registeredLFO.analyser);
+  });
+}; 
