@@ -1,4 +1,4 @@
-declare module 'canvas-sketch-util/random' {
+declare module "canvas-sketch-util/random" {
   const random: {
     getRandomSeed(): number;
     setSeed(arg0: number | string): void;

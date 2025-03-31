@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
 import { Piece, loadPiece } from "./pieces/types";
 import { useEffect, useState } from "react";
-// import None from './sketches/None';
 import Player from "./Player";
 import SkewedRect from "./sketches/SkewedRects";
 
@@ -11,7 +10,7 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
 
   useEffect(() => {
     const loadPieceEffect = async () => {
-      console.log({pieceTitle, loadedPiece});
+      console.log({ pieceTitle, loadedPiece });
       if (pieceTitle && !loadedPiece) {
         try {
           const pieceEntry = await loadPiece(pieceTitle);
@@ -27,12 +26,10 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   return (
     <div>
       <main>
-        <SkewedRect piece={loadedPiece} />
+        <SkewedRect />
       </main>
       <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
-        {
-          loadedPiece && <Player piece={loadedPiece} />
-        }
+        {loadedPiece && <Player piece={loadedPiece} />}
       </footer>
     </div>
   );

@@ -2,27 +2,27 @@ import { registerModulator } from "@/app/utils/tone-utils";
 import { Piece } from "./types";
 import * as Tone from "tone";
 
-const modulators: Piece['modulators'] = [];
+const modulators: Piece["modulators"] = [];
 
 const omniOsc = new Tone.OmniOscillator("C#2", "sine");
 const droneLFO = new Tone.LFO("0.001hz", 0, 15);
-registerModulator(modulators, 'Drone Frequency', droneLFO);
+registerModulator(modulators, "Drone Frequency", droneLFO);
 
 const omniOsc2 = new Tone.OmniOscillator("G#2", "fatsawtooth");
 const droneLFO2 = new Tone.LFO("0.0011hz", 100, 150);
-registerModulator(modulators, 'Drone 2 Frequency', droneLFO2);
+registerModulator(modulators, "Drone 2 Frequency", droneLFO2);
 
 const DetuneLFO = new Tone.LFO("0.001hz", -1, 1);
-registerModulator(modulators, 'EQ Frequency', DetuneLFO);
+registerModulator(modulators, "EQ Frequency", DetuneLFO);
 
-const EQ = new Tone.EQ3({highFrequency: 2500, high: 0 });
+const EQ = new Tone.EQ3({ highFrequency: 2500, high: 0 });
 
 DetuneLFO.connect(EQ.highFrequency);
 DetuneLFO.connect(EQ.high);
 
 const omniOsc3 = new Tone.OmniOscillator("F3", "fatsawtooth");
 const droneLFO3 = new Tone.LFO("0.001hz", 0, 50);
-registerModulator(modulators, 'Drone 3 Frequency', droneLFO3);
+registerModulator(modulators, "Drone 3 Frequency", droneLFO3);
 
 const panner1 = new Tone.Panner(0); // Center
 const panner2 = new Tone.Panner(-0.5); // Left
@@ -30,11 +30,11 @@ const panner3 = new Tone.Panner(0.5); // Right
 
 const omniOsc4 = new Tone.OmniOscillator("C#4", "fatsawtooth");
 const droneLFO4 = new Tone.LFO("0.0025hz", 0, 50);
-registerModulator(modulators, 'Drone 4 Frequency', droneLFO4);
+registerModulator(modulators, "Drone 4 Frequency", droneLFO4);
 
 const omniOsc5 = new Tone.OmniOscillator("A#4", "fatsawtooth");
 const droneLFO5 = new Tone.LFO("0.0024hz", 100, 150);
-registerModulator(modulators, 'Drone 5 Frequency', droneLFO5);
+registerModulator(modulators, "Drone 5 Frequency", droneLFO5);
 
 const panner4 = new Tone.Panner(-1); // Slightly left
 const panner5 = new Tone.Panner(1); // Slightly right
@@ -97,8 +97,8 @@ tremolo.start();
 TremoloLFO.start();
 
 const sweep: Piece = {
-    title: 'Sweep',
-    modulators,
-}
+  title: "Sweep",
+  modulators,
+};
 
 export default sweep;

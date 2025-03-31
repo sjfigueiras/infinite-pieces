@@ -1,4 +1,4 @@
-declare module 'canvas-sketch' {
-    const canvasSketch: any;
-    export default canvasSketch;
-  }
+declare module "canvas-sketch" {
+  const canvasSketch: (settings: object) => void;
+  export default canvasSketch;
+}

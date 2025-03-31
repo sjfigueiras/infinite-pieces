@@ -1,4 +1,4 @@
-import * as Tone from 'tone';
+import * as Tone from "tone";
 
 export function getRandomBetween(min: number, max: number): number {
   return Math.random() * (max - min) + min;
@@ -15,7 +15,7 @@ export function scheduleRandomRepeat(
   scheduledFunction: (time: number) => void,
   minDelay: number,
   maxDelay: number,
-  startTime = getRandomBetween(minDelay, maxDelay)
+  startTime = getRandomBetween(minDelay, maxDelay),
 ): void {
   Tone.Transport.scheduleOnce((time: number) => {
     scheduledFunction(time);
@@ -44,50 +44,50 @@ export function registerModulator(
   });
 }
 
-export const drawAnalysers = (registeredLFOs: any) => {
-  function draw(ctx: any, canvas: any, analyser: any) {
-    requestAnimationFrame(() => draw(ctx, canvas, analyser));
-    const values = analyser.getValue();
+/**
+ * TODO: Review this function if we still wan't to
+ * plot anylisers.
+ */
+// export const drawAnalysers = (registeredLFOs: any) => {
+//   function draw(ctx: any, canvas: any, analyser: any) {
+//     requestAnimationFrame(() => draw(ctx, canvas, analyser));
+//     const values = analyser.getValue();
 
-    // Limpiar canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.strokeStyle = '#ff0077';
-    ctx.lineWidth = 2;
+//     // Limpiar canvas
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     ctx.beginPath();
+//     ctx.strokeStyle = "#ff0077";
+//     ctx.lineWidth = 2;
 
-    // Dibujar la forma de onda
-    for (let i = 0; i < values.length; i++) {
-      const x = (i / values.length) * canvas.width;
-      const y = (1 - (values[i] +1) / 2) * canvas.height;
-      if (i === 0) {
-        ctx.moveTo(x, y );
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
+//     // Dibujar la forma de onda
+//     for (let i = 0; i < values.length; i++) {
+//       const x = (i / values.length) * canvas.width;
+//       const y = (1 - (values[i] + 1) / 2) * canvas.height;
+//       if (i === 0) {
+//         ctx.moveTo(x, y);
+//       } else {
+//         ctx.lineTo(x, y);
+//       }
+//     }
 
-    ctx.stroke();
-  }
+//     ctx.stroke();
+//   }
 
-  const lfoContainer = document.getElementById("lfo-container")!;
-  registeredLFOs.length > 0
-  && lfoContainer.appendChild(document.createTextNode("LFOs")) 
-  && lfoContainer.appendChild(document.createElement("br"))
-  && lfoContainer.appendChild(document.createElement("br"));
+//   const lfoContainer = document.getElementById("lfo-container")!;
 
-  registeredLFOs.forEach((registeredLFO: any, i: number) => {
-    // Configurar canvas
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("id", `anaylser-node-${i}`);
-    canvas.setAttribute("style", "background-color: white");
+//   registeredLFOs.forEach((registeredLFO: Modulator, i: number) => {
+//     // Configurar canvas
+//     const canvas = document.createElement("canvas");
+//     canvas.setAttribute("id", `anaylser-node-${i}`);
+//     canvas.setAttribute("style", "background-color: white");
 
-    lfoContainer.appendChild(document.createTextNode(registeredLFO.name));
-    lfoContainer.appendChild(canvas);
+//     lfoContainer.appendChild(document.createTextNode(registeredLFO.name));
+//     lfoContainer.appendChild(canvas);
 
-    const ctx = canvas.getContext("2d");
-    canvas.width = 200;
-    canvas.height = 200;
+//     const ctx = canvas.getContext("2d");
+//     canvas.width = 200;
+//     canvas.height = 200;
 
-    draw(ctx, canvas, registeredLFO.analyser);
-  });
-}; 
+//     draw(ctx, canvas, registeredLFO.analyser);
+//   });
+// };
