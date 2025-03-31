@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import Visualizer from "./components/Visualizer";
 
 export default function Home() {
-  return <Visualizer pieceTitle="entusiasmo"/>
+  return <Visualizer pieceTitle="entusiasmo" />;
 }

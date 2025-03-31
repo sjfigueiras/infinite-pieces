@@ -1,4 +1,4 @@
-import * as Tone from 'tone';
+import * as Tone from "tone";
 
 export function getRandomBetween(min: number, max: number): number {
   return Math.random() * (max - min) + min;
@@ -15,7 +15,7 @@ export function scheduleRandomRepeat(
   scheduledFunction: (time: number) => void,
   minDelay: number,
   maxDelay: number,
-  startTime = getRandomBetween(minDelay, maxDelay)
+  startTime = getRandomBetween(minDelay, maxDelay),
 ): void {
   Tone.Transport.scheduleOnce((time: number) => {
     scheduledFunction(time);
@@ -52,15 +52,15 @@ export const drawAnalysers = (registeredLFOs: any) => {
     // Limpiar canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
-    ctx.strokeStyle = '#ff0077';
+    ctx.strokeStyle = "#ff0077";
     ctx.lineWidth = 2;
 
     // Dibujar la forma de onda
     for (let i = 0; i < values.length; i++) {
       const x = (i / values.length) * canvas.width;
-      const y = (1 - (values[i] +1) / 2) * canvas.height;
+      const y = (1 - (values[i] + 1) / 2) * canvas.height;
       if (i === 0) {
-        ctx.moveTo(x, y );
+        ctx.moveTo(x, y);
       } else {
         ctx.lineTo(x, y);
       }
@@ -70,10 +70,10 @@ export const drawAnalysers = (registeredLFOs: any) => {
   }
 
   const lfoContainer = document.getElementById("lfo-container")!;
-  registeredLFOs.length > 0
-  && lfoContainer.appendChild(document.createTextNode("LFOs")) 
-  && lfoContainer.appendChild(document.createElement("br"))
-  && lfoContainer.appendChild(document.createElement("br"));
+  registeredLFOs.length > 0 &&
+    lfoContainer.appendChild(document.createTextNode("LFOs")) &&
+    lfoContainer.appendChild(document.createElement("br")) &&
+    lfoContainer.appendChild(document.createElement("br"));
 
   registeredLFOs.forEach((registeredLFO: any, i: number) => {
     // Configurar canvas
@@ -90,4 +90,4 @@ export const drawAnalysers = (registeredLFOs: any) => {
 
     draw(ctx, canvas, registeredLFO.analyser);
   });
-}; 
+};

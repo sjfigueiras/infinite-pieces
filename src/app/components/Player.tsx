@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import * as Tone from "tone";
 import { useEffect, useState } from "react";
 import { Piece } from "./pieces/types";
@@ -7,19 +7,19 @@ export interface PlayerProps {
   piece: Piece;
 }
 
-const Player = ({piece}: PlayerProps) => {
+const Player = ({ piece }: PlayerProps) => {
   // const [player, setPlayer] = useState<Tone.Player | null>(null);
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
   const [dbValue, setDbValue] = useState(Tone.gainToDb(1));
 
   useEffect(() => {
-    console.log({piece});
+    console.log({ piece });
   }, [piece]);
 
   useEffect(() => {
     Tone.getDestination().mute = muted;
-  }, [muted])
+  }, [muted]);
 
   useEffect(() => {
     /**
@@ -31,22 +31,22 @@ const Player = ({piece}: PlayerProps) => {
     console.log(gainToDb);
     Tone.getDestination().volume.value = gainToDb;
     setDbValue(gainToDb);
-  }, [volume])
-  
+  }, [volume]);
+
   const onVolumeChange = (event: React.ChangeEvent<HTMLAudioElement>) => {
     const volumeChanged = event.target.volume !== volume;
 
     volumeChanged
       ? setVolume(event.target.volume)
       : setMuted(event.target.muted);
-  }
+  };
 
   const onPlay = async () => {
     Tone.getDestination().mute = false;
     Tone.getTransport().start();
     await Tone.start();
     await Tone.loaded();
-  }
+  };
 
   const onPause = () => {
     Tone.getTransport().stop();
@@ -65,30 +65,30 @@ const Player = ({piece}: PlayerProps) => {
     // });
 
     // controlsContainer.append(reloadButton);
-  }
+  };
 
-  const AUTO_PLAYBACK_KEY_NAME = 'InfinitePieces.Settings.PlayAutomatically';
+  const AUTO_PLAYBACK_KEY_NAME = "InfinitePieces.Settings.PlayAutomatically";
 
   /**
    * TODO: Migrate auto-playback from Vanilla JS to React
    */
   const handleRestartBehavior = () => {
     const shouldPlayAutomatically =
-      localStorage.getItem(AUTO_PLAYBACK_KEY_NAME) === 'true';
+      localStorage.getItem(AUTO_PLAYBACK_KEY_NAME) === "true";
     const automaticPlaybackCheckbox = document.getElementById(
-      'automatic-play-checkbox'
+      "automatic-play-checkbox",
     ) as HTMLInputElement;
 
     if (shouldPlayAutomatically) {
       automaticPlaybackCheckbox.checked = true;
-      const controls = document.getElementById('controls') as HTMLAudioElement;
+      const controls = document.getElementById("controls") as HTMLAudioElement;
       controls.play();
     }
 
-    automaticPlaybackCheckbox.addEventListener('change', () => {
+    automaticPlaybackCheckbox.addEventListener("change", () => {
       localStorage.setItem(
         AUTO_PLAYBACK_KEY_NAME,
-        automaticPlaybackCheckbox.checked.toString()
+        automaticPlaybackCheckbox.checked.toString(),
       );
     });
   };

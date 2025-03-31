@@ -2,7 +2,7 @@ import { registerModulator } from "@/app/utils/tone-utils";
 import { Piece } from "./types";
 import * as Tone from "tone";
 
-const modulators: Piece['modulators'] = [];
+const modulators: Piece["modulators"] = [];
 
 const omniOsc = new Tone.OmniOscillator("C#2", "sine");
 const omniOsc2 = new Tone.OmniOscillator("G#2", "fatsawtooth");
@@ -41,20 +41,20 @@ tremolo.start();
 
 droneLFO.phase = 0; // No phase offset
 droneLFO.connect(omniOsc.frequency);
-registerModulator(modulators, 'Drone Frequency', droneLFO);
+registerModulator(modulators, "Drone Frequency", droneLFO);
 
 metaLFO.connect(droneLFO.frequency); // Modulate the frequency of droneLFO
-registerModulator(modulators, 'Meta LFO', metaLFO);
+registerModulator(modulators, "Meta LFO", metaLFO);
 
 droneLFO2.phase = 45; // 45-degree phase offset
 droneLFO2.connect(omniOsc2.frequency);
-registerModulator(modulators, 'Drone 2 Frequency', droneLFO2);
+registerModulator(modulators, "Drone 2 Frequency", droneLFO2);
 
 DetuneLFO.connect(omniOsc2.detune);
 DetuneLFO.connect(omniOsc.detune);
-registerModulator(modulators, 'EQ Frequency', DetuneLFO);
+registerModulator(modulators, "EQ Frequency", DetuneLFO);
 
-const EQ = new Tone.EQ3({highFrequency: 2500, high: -12});
+const EQ = new Tone.EQ3({ highFrequency: 2500, high: -12 });
 
 DetuneLFO.connect(EQ.highFrequency);
 DetuneLFO.connect(EQ.high);
@@ -62,7 +62,7 @@ DetuneLFO.connect(EQ.high);
 
 droneLFO3.phase = 90; // 90-degree phase offset
 droneLFO3.connect(omniOsc3.frequency);
-registerModulator(modulators, 'Drone 3 Frequency', droneLFO3);
+registerModulator(modulators, "Drone 3 Frequency", droneLFO3);
 
 const panner1 = new Tone.Panner(0); // Center
 // const panner2 = new Tone.Panner(-1); // Left
@@ -72,11 +72,11 @@ const panner3 = new Tone.Panner(0.5); // Right
 
 droneLFO4.phase = 135; // 135-degree phase offset
 droneLFO4.connect(omniOsc4.frequency);
-registerModulator(modulators, 'Drone 4 Frequency', droneLFO4);
+registerModulator(modulators, "Drone 4 Frequency", droneLFO4);
 
 droneLFO5.phase = 180; // 180-degree phase offset
 droneLFO5.connect(omniOsc5.frequency);
-registerModulator(modulators, 'Drone 5 Frequency', droneLFO5);
+registerModulator(modulators, "Drone 5 Frequency", droneLFO5);
 
 const panner4 = new Tone.Panner(-1); // Slightly left
 const panner5 = new Tone.Panner(1); // Slightly right
@@ -128,23 +128,23 @@ limiter.toDestination();
 
 // Schedule oscillator start and stop times
 const scheduleTimes = [
-    { osc: omniOsc, start: 0, stop: 25 },
-    { osc: omniOsc2, start: 30, stop: 5 },
-    { osc: omniOsc3, start: 10, stop: 35 },
-    { osc: omniOsc4, start: 40, stop: 15 },
-    { osc: omniOsc5, start: 20, stop: 45 },
+  { osc: omniOsc, start: 0, stop: 25 },
+  { osc: omniOsc2, start: 30, stop: 5 },
+  { osc: omniOsc3, start: 10, stop: 35 },
+  { osc: omniOsc4, start: 40, stop: 15 },
+  { osc: omniOsc5, start: 20, stop: 45 },
 ];
 
 scheduleTimes.forEach(({ osc, start, stop }) => {
-    Tone.Transport.schedule((time) => osc.start(time), start);
-    Tone.Transport.schedule((time) => osc.stop(time + stop), start);
+  Tone.Transport.schedule((time) => osc.start(time), start);
+  Tone.Transport.schedule((time) => osc.stop(time + stop), start);
 });
 
 // Tone.Transport.start();
 
 const noisy: Piece = {
-    title: 'Noisy',
-    modulators,
-}
+  title: "Noisy",
+  modulators,
+};
 
 export default noisy;
