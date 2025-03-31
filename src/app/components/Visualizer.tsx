@@ -2,8 +2,9 @@
 
 import { Piece, loadPiece } from "./pieces/types";
 import { useEffect, useState } from "react";
-import None from './sketches/None';
+// import None from './sketches/None';
 import Player from "./Player";
+import SkewedRect from "./sketches/SkewedRects";
 
 export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [loadedPiece, setLoadedPiece] = useState<Piece | undefined>(undefined);
@@ -26,7 +27,7 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   return (
     <div>
       <main>
-        <None piece={loadedPiece} />
+        <SkewedRect piece={loadedPiece} />
       </main>
       <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
         {

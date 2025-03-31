@@ -2,7 +2,6 @@
 import { Piece } from "../pieces/types";
 import { useEffect, useRef } from "react";
 import canvasSketch, { SketchProps } from 'canvas-sketch';
-import * as Tone from 'tone';
 
 const None = ({piece}: {piece?: Piece}) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
