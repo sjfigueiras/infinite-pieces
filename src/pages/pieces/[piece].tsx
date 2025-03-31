@@ -10,6 +10,6 @@ export default function Page() {
    * Query param is either string | string[] | undefined
    * Lets make sure it's not a string[]
    */
-  let pieceKey = Array.isArray(queryParam) ? queryParam[0] : queryParam;
+  const pieceKey = Array.isArray(queryParam) ? queryParam[0] : queryParam;
   return <Visualizer pieceTitle={pieceKey} />;
 }

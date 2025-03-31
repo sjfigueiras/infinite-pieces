@@ -16,7 +16,11 @@ const webVitals = [
 const eslintConfig = [
   ...webVitals,
   ...compat.config({
-    extends: ["next", "prettier"],
+    extends: ["next", "prettier", "plugin:prettier/recommended"], // Added Prettier integration
+    plugins: ["prettier"], // Added Prettier plugin
+    rules: {
+      "prettier/prettier": "error", // Enforce Prettier formatting as ESLint errors
+    },
   }),
 ];
 
