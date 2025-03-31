@@ -8,7 +8,7 @@ export interface Modulator {
   analyser: Tone.Analyser;
   lfo: Tone.LFO;
   name: string;
-  signal: Tone.Signal;
+  signal?: Tone.Signal;
 }
 
 export function scheduleRandomRepeat(
@@ -34,7 +34,7 @@ export function registerModulator(
   modulators: Modulator[],
   name: string,
   lfo: Tone.LFO,
-  signal: Tone.Signal,
+  signal?: Tone.Signal,
 ): void {
   modulators.push({
     name,
