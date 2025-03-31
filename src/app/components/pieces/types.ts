@@ -11,6 +11,8 @@ const pieceRegistry: Record<string, () => Promise<Piece>> = {
     // Add mappings here
     entusiasmo: async () => (await (import("./entusiasmo"))).default as Piece,
     ondulado: async () => (await (import("./ondulado"))).default as Piece,
+    sweep: async () => (await (import("./sweep"))).default as Piece,
+    noisy: async () => (await (import("./noisy"))).default as Piece,
     default: async () => (await (import("./entusiasmo"))).default as Piece,
     // Add more pieces as needed
 };

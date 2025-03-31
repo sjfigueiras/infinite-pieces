@@ -66,9 +66,9 @@ const dist = new Tone.Distortion(0.3);
 const EQ = new Tone.EQ3({highFrequency: 8000, high: -12});
 
 /**
- * Extract: Analysers
+ * TODO: Handle modulator in a more generic way.
+ * Abstract them behind the Modulator module.
  */
-
 export const modulators: Modulator[] = [];
 
 /**
