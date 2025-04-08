@@ -3,7 +3,7 @@
 import { Piece, loadPiece } from "./pieces/types";
 import { useEffect, useState } from "react";
 import Player from "./Player";
-import SkewedRect from "./sketches/SkewedRects";
+import SkewedRect from "./CanvasSketch";
 
 export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [loadedPiece, setLoadedPiece] = useState<Piece | undefined>(undefined);
@@ -16,7 +16,7 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
           const pieceEntry = await loadPiece(pieceTitle);
           setLoadedPiece(pieceEntry);
         } catch (error) {
-          console.error(`Error loading piece with key "${pieceTitle}":`, error); // Improved error logging
+          console.error(`Error loading piece with key "${pieceTitle}":`, error);
         }
       }
     };
