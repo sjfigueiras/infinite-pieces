@@ -1,24 +1,17 @@
 "use client";
 import { useEffect, useRef } from "react";
 import canvasSketch from "canvas-sketch";
-
-/**
- * TODO:
- *  - Make a sketch registry analogous to the piece registry.
- *  - Make a modulator abstraction to distribute LFOs both to
- * the sketches and the pieces.
- */
-import { settings, sketch } from "./sketches/skewed-rects";
+import { VisualPiece } from "../pieces/registry";
 
 export type CanvasSketchSettings = (canvas: HTMLCanvasElement) => object;
 
-const CanvasSketch = () => {
+const Canvas = (props: VisualPiece) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
-      canvasSketch(sketch, {
-        ...settings(canvasRef.current),
+      canvasSketch(props.sketch, {
+        ...props.settings(canvasRef.current),
         canvas: canvasRef.current,
       });
     }
@@ -31,4 +24,4 @@ const CanvasSketch = () => {
   );
 };
 
-export default CanvasSketch;
+export default Canvas;

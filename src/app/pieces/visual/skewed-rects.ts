@@ -3,7 +3,7 @@ import random from "canvas-sketch-util/random";
 import Color from "canvas-sketch-util/color";
 import math from "canvas-sketch-util/math";
 import { SketchProps } from "canvas-sketch";
-import { CanvasSketchSettings } from "../CanvasSketch";
+import { CanvasSketchSettings } from "../../components/Canvas";
 
 interface Rect {
   x: number;
@@ -170,3 +170,11 @@ export const sketch = ({ context, width, height }: SketchProps) => {
     context.restore();
   };
 };
+
+const visualPiece = {
+  title: "Skewed Rects",
+  settings,
+  sketch,
+};
+
+export default visualPiece;

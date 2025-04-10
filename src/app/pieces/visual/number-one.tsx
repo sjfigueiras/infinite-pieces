@@ -1,6 +1,6 @@
 "use client";
 import { SketchProps } from "canvas-sketch";
-import { CanvasSketchSettings } from "../CanvasSketch";
+import { CanvasSketchSettings } from "../../components/Canvas";
 
 export const settings: CanvasSketchSettings = (canvas) => ({
   animate: true,

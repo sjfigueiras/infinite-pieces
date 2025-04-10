@@ -6,7 +6,7 @@ import {
   registerModulator,
 } from "../../utils/tone-utils";
 import { createUprightSampler } from "../../utils/sampler-utils";
-import { Piece } from "./types";
+import { SonicPiece } from "../registry";
 
 const layerA = createUprightSampler();
 const layerB = createUprightSampler();
@@ -168,7 +168,7 @@ EQ.toDestination();
 
 layerB.toDestination();
 
-const ondulado: Piece = {
+const ondulado: SonicPiece = {
   title: "Entusiasmo",
   modulators,
 };

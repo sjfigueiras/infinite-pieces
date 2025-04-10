@@ -1,5 +1,5 @@
 import { registerModulator } from "@/app/utils/tone-utils";
-import { Piece } from "./types";
+import { Piece } from "../registry";
 import * as Tone from "tone";
 
 const modulators: Piece["modulators"] = [];

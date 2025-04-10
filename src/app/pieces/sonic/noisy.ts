@@ -1,8 +1,8 @@
 import { registerModulator } from "@/app/utils/tone-utils";
-import { Piece } from "./types";
+import { SonicPiece } from "../registry";
 import * as Tone from "tone";
 
-const modulators: Piece["modulators"] = [];
+const modulators: SonicPiece["modulators"] = [];
 
 const omniOsc = new Tone.OmniOscillator("C#2", "sine");
 const omniOsc2 = new Tone.OmniOscillator("G#2", "fatsawtooth");
@@ -140,9 +140,7 @@ scheduleTimes.forEach(({ osc, start, stop }) => {
   Tone.Transport.schedule((time) => osc.stop(time + stop), start);
 });
 
-// Tone.Transport.start();
-
-const noisy: Piece = {
+const noisy: SonicPiece = {
   title: "Noisy",
   modulators,
 };

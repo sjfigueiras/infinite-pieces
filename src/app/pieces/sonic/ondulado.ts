@@ -6,7 +6,7 @@ import {
   registerModulator,
 } from "../../utils/tone-utils";
 import { createUprightSampler } from "../../utils/sampler-utils";
-import { Piece } from "./types";
+import { Piece } from "../registry";
 
 const layerA = createUprightSampler();
 const layerB = createUprightSampler();
