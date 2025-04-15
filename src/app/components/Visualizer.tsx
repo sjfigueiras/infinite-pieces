@@ -10,6 +10,7 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [visualPiece, setVisualPiece] = useState<VisualPiece | undefined>(
     undefined,
   );
+  const [audioComponent, setAudioComponent] = useState<HTMLAudioElement | undefined>(undefined);
 
   useEffect(() => {
     const loadSonicPieceEffect = async () => {
@@ -44,16 +45,24 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   return (
     <div>
       <main>
-        {visualPiece && (
+        {visualPiece && audioComponent && (
           <Canvas
+            author={visualPiece.author}
             title={visualPiece.title}
             settings={visualPiece.settings}
             sketch={visualPiece.sketch}
+            audioComponent={audioComponent}
           />
         )}
       </main>
       <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
-        {loadedPiece && <Player piece={loadedPiece} />}
+        {loadedPiece && (
+          <Player
+            piece={loadedPiece}
+            audioComponent={audioComponent}
+            setAudioComponent={setAudioComponent}
+          />
+        )}
       </footer>
     </div>
   );

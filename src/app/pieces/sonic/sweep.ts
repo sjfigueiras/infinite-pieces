@@ -1,8 +1,8 @@
 import { registerModulator } from "@/app/utils/tone-utils";
-import { Piece } from "../registry";
+import { SonicPiece } from "../registry";
 import * as Tone from "tone";
 
-const modulators: Piece["modulators"] = [];
+const modulators: SonicPiece["modulators"] = [];
 
 const omniOsc = new Tone.OmniOscillator("C#2", "sine");
 const droneLFO = new Tone.LFO("0.001hz", 0, 15);
@@ -96,7 +96,8 @@ droneLFO5.start();
 tremolo.start();
 TremoloLFO.start();
 
-const sweep: Piece = {
+const sweep: SonicPiece = {
+  author: "Santiago Figueiras",
   title: "Sweep",
   modulators,
 };

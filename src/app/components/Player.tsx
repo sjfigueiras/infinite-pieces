@@ -5,12 +5,19 @@ import { Piece } from "../pieces/registry";
 
 export interface PlayerProps {
   piece: Piece;
+  audioComponent?: HTMLAudioElement | null;
+  setAudioComponent: (audio: HTMLAudioElement) => void;
 }
 
-const Player = ({ piece }: PlayerProps) => {
+const Player = ({ piece, setAudioComponent }: PlayerProps) => {
   // const [player, setPlayer] = useState<Tone.Player | null>(null);
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
+
+  useEffect(() => {
+    const audio = document.querySelector("audio") as HTMLAudioElement;
+    setAudioComponent(audio);
+  }, []);
 
   useEffect(() => {
     console.log({ piece });
@@ -53,50 +60,18 @@ const Player = ({ piece }: PlayerProps) => {
     Tone.getDestination().mute = true;
   };
 
-  const AUTO_PLAYBACK_KEY_NAME = "InfinitePieces.Settings.PlayAutomatically";
-
-  /**
-   * TODO: Migrate auto-playback from Vanilla JS to React
-   */
-  const handleRestartBehavior = () => {
-    const shouldPlayAutomatically =
-      localStorage.getItem(AUTO_PLAYBACK_KEY_NAME) === "true";
-    const automaticPlaybackCheckbox = document.getElementById(
-      "automatic-play-checkbox",
-    ) as HTMLInputElement;
-
-    if (shouldPlayAutomatically) {
-      automaticPlaybackCheckbox.checked = true;
-      const controls = document.getElementById("controls") as HTMLAudioElement;
-      controls.play();
-    }
-
-    automaticPlaybackCheckbox.addEventListener("change", () => {
-      localStorage.setItem(
-        AUTO_PLAYBACK_KEY_NAME,
-        automaticPlaybackCheckbox.checked.toString(),
-      );
-    });
-  };
-
-  const onLoad = () => {
-    handleRestartBehavior();
-  };
-
   return (
-    <div onLoad={onLoad}>
-      <section id="controls-container">
-        <audio
-          id="controls"
-          controls
-          loop
-          src="/silence.mp3"
-          onPlay={onPlay}
-          onPause={onPause}
-          onVolumeChange={onVolumeChange}
-        ></audio>
-      </section>
-    </div>
+    <section id="controls-container">
+      <audio
+        id="controls"
+        controls
+        loop
+        src="/silence.mp3"
+        onPlay={onPlay}
+        onPause={onPause}
+        onVolumeChange={onVolumeChange}
+      ></audio>
+    </section>
   );
 };
 

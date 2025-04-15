@@ -1,18 +1,20 @@
 import { Modulator } from "@/app/utils/tone-utils";
 import { SketchProps } from "canvas-sketch";
-import { CanvasSketchSettings } from "../components/Canvas";
+import { CanvasSketchSettingsFunc } from "../components/Canvas";
 
 export interface Piece {
+  tags?: string[];
   title: string;
+  author: string;
 }
 
 export interface SonicPiece extends Piece {
-  modulators: Modulator[];
+  modulators?: Modulator[];
 }
 
 export interface VisualPiece extends Piece {
-  settings: CanvasSketchSettings;
-  sketch: (props: SketchProps) => void;
+  settings: CanvasSketchSettingsFunc;
+  sketch: (audioComponent?: HTMLAudioElement) => (props: SketchProps) => void;
 }
 
 interface PieceRegistry {
@@ -37,7 +39,7 @@ const pieceRegistry: PieceRegistry = {
   },
   visual: {
     default: async () =>
-      (await import("./visual/skewed-rects")).default as VisualPiece,
+      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
   },
 };
 

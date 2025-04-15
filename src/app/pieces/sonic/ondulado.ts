@@ -6,7 +6,7 @@ import {
   registerModulator,
 } from "../../utils/tone-utils";
 import { createUprightSampler } from "../../utils/sampler-utils";
-import { Piece } from "../registry";
+import { SonicPiece } from "../registry";
 
 const layerA = createUprightSampler();
 const layerB = createUprightSampler();
@@ -111,7 +111,8 @@ EQ.toDestination();
 
 layerB.toDestination();
 
-const ondulado: Piece = {
+const ondulado: SonicPiece = {
+  author: "Santiago Figueiras",
   title: "Ondulado",
   modulators,
 };

@@ -9,6 +9,7 @@ declare module "canvas-sketch" {
   }
 
   interface SketchProps {
+    audioComponent?: HTMLAudioElement;
     context: CanvasRenderingContext2D;
     width: number;
     height: number;

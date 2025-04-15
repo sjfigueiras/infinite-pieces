@@ -169,6 +169,7 @@ EQ.toDestination();
 layerB.toDestination();
 
 const ondulado: SonicPiece = {
+  author: "Santiago Figueiras",
   title: "Entusiasmo",
   modulators,
 };
