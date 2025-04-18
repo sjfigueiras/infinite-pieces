@@ -34,6 +34,7 @@ const pieceRegistry: PieceRegistry = {
       (await import("./sonic/ondulado")).default as SonicPiece,
     sweep: async () => (await import("./sonic/sweep")).default as SonicPiece,
     noisy: async () => (await import("./sonic/noisy")).default as SonicPiece,
+    drone: async () => (await import("./sonic/drone")).default as SonicPiece,
     default: async () =>
       (await import("./sonic/entusiasmo")).default as SonicPiece,
   },
