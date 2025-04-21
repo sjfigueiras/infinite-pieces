@@ -1,9 +1,12 @@
 import * as Tone from "tone";
 import { SonicPiece } from "../registry";
 import { getRandomBetween, scheduleRandomRepeat } from "@/app/utils/tone-utils";
+import { createUprightSampler } from "@/app/utils/sampler-utils";
 
-const getReverb = () => new Tone.Reverb(15).toDestination().generate();
+const master = new Tone.Gain(0.5).toDestination();
+
 const compressor = new Tone.Compressor();
+compressor.connect(master);
 
 const synthGain = new Tone.Gain().connect(compressor);
 const lPan = new Tone.Panner(-1);
@@ -24,9 +27,6 @@ const sub = () => {
     sub();
   }, '+4');
 };
-
-const playbackRate = 0.15;
-const vol = new Tone.Volume(-10);
 
 /**
  * TODO: Extract to utils file
@@ -52,38 +52,38 @@ rPan.connect(delay);
 delay.toDestination();
 
 const noise = new Tone.Noise("pink").start();
-const noiseLFO = new Tone.LFO("0.1hz", -32, -38).start();
+const noiseVolume = new Tone.Volume(-38);
+noiseVolume.connect(compressor);
+noise.connect(noiseVolume);
 
-const noiseEQ = new Tone.EQ3({
+const EQ = new Tone.EQ3({
   high: -12,
 });
 
 const EQLFO =  new Tone.LFO("1hz", 1000, 15000).start(); 
-EQLFO.connect(noiseEQ.highFrequency);
-
-noiseLFO.connect(noise.volume);
-
-noise.volume.value = -28;
-noise.toDestination();
+EQLFO.connect(EQ.highFrequency);
 
 sub();
 
 const synthLead = new Tone.Synth({
   oscillator: { type: "amsawtooth10" },
+  volume: -19,
 }).connect(compressor);
 
 scheduleRandomRepeat(
-    function (time) {
-      synthLead.triggerAttack('E2', time, .5);
-    },
-    120,
-    60,
-    getRandomBetween(0, 1),
-  );
+  (time) => {
+    synthLead.triggerAttack('E2', time, .5);
+    synthLead.frequency.rampTo('F#2', 0.011, time);
+  },
+  20,
+  60,
+  getRandomBetween(0, 1),
+);
 
 scheduleRandomRepeat(
-  function (time) {
+  (time) => {
     synthLead.triggerAttack('G#3', time, .5);
+    synthLead.frequency.rampTo('A#3', 0.01, time);
   },
   120,
   60,
@@ -93,14 +93,43 @@ scheduleRandomRepeat(
 const synthLFO = new Tone.LFO("0.1hz", 0, 100).start();
 synthLFO.connect(synthLead.detune);
 
-synthLead.connect(noiseEQ);
+const upright = createUprightSampler();
+const melodia = ["C4", "E4", "G4", "B4", "C5"];
 
-compressor.toDestination();
+var pitchShift = new Tone.PitchShift({
+  pitch: -5 // this is working and lowers pitch by a fifth
+});
 
+upright.connect(pitchShift);
+pitchShift.connect(master);
 
-const noisy: SonicPiece = {
+melodia.forEach((nota) => {
+  scheduleRandomRepeat(
+    (time)  =>{
+      upright.triggerAttack(nota, time);
+    },
+    60,
+    100,
+    getRandomBetween(0, 5),
+  );
+});
+
+/**
+ * Master Setup
+ */
+const panner3d = new Tone.Panner3D();
+const rotationZ = new Tone.LFO("20hz", 0, 5).start();
+const rotationX = new Tone.LFO("10hz", 0, 2).start();
+rotationZ.connect(panner3d.orientationZ);
+rotationX.connect(panner3d.orientationX);
+
+synthLead.connect(panner3d);
+panner3d.connect(master); // Conecta el compressor al Panner3D
+panner3d.connect(compressor);
+
+const heartbeat: SonicPiece = {
   author: "Santiago Figueiras",
-  title: "Noisy",
+  title: "heartbeat",
 };
 
-export default noisy;
+export default heartbeat;

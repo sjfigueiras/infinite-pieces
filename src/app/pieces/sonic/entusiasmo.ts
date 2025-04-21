@@ -26,9 +26,9 @@ const bajosB = ["C2", "A1"];
 // const repeticiones = [23.53, 25.76, 29.123, 19.29, 16.831, 22.432, 27.97];
 // const duraciones = [0, 5.23, 20.91, 15.47, 9.77, 19.55, 20.112];
 
-melodia.forEach(function (nota) {
+melodia.forEach((nota) => {
   scheduleRandomRepeat(
-    function (time) {
+    (time)  =>{
       layerA.triggerAttack(nota, time);
     },
     10,
@@ -37,9 +37,9 @@ melodia.forEach(function (nota) {
   );
 });
 
-texturasA.forEach(function (nota) {
+texturasA.forEach((nota) => {
   scheduleRandomRepeat(
-    function (time) {
+    (time)  =>{
       layerA.triggerAttack(nota, time);
     },
     60,
@@ -48,9 +48,9 @@ texturasA.forEach(function (nota) {
   );
 });
 
-texturasB.forEach(function (nota) {
+texturasB.forEach((nota) => {
   scheduleRandomRepeat(
-    function (time) {
+    (time)  =>{
       layerA.triggerAttack(nota, time);
     },
     120,
@@ -59,9 +59,9 @@ texturasB.forEach(function (nota) {
   );
 });
 
-bajosA.forEach(function (nota) {
+bajosA.forEach((nota) => {
   scheduleRandomRepeat(
-    function (time) {
+    (time)  =>{
       layerB.triggerAttack(nota, time);
     },
     60,
@@ -70,9 +70,9 @@ bajosA.forEach(function (nota) {
   );
 });
 
-bajosB.forEach(function (nota) {
+bajosB.forEach((nota) => {
   scheduleRandomRepeat(
-    function (time) {
+    (time)  =>{
       layerB.triggerAttack(nota, time);
     },
     120,
