@@ -141,6 +141,7 @@ scheduleTimes.forEach(({ osc, start, stop }) => {
 });
 
 const noisy: SonicPiece = {
+  author: "Santiago Figueiras",
   title: "Noisy",
   modulators,
 };

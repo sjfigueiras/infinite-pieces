@@ -3,7 +3,8 @@ import random from "canvas-sketch-util/random";
 import Color from "canvas-sketch-util/color";
 import math from "canvas-sketch-util/math";
 import { SketchProps } from "canvas-sketch";
-import { CanvasSketchSettings } from "../../components/Canvas";
+import { CanvasSketchSettingsFunc } from "../../components/Canvas";
+import { VisualPiece } from "../registry";
 
 interface Rect {
   x: number;
@@ -16,18 +17,15 @@ interface Rect {
 
 const seed = random.getRandomSeed();
 
-export const settings: CanvasSketchSettings = (canvas) => ({
-  canvas: canvas,
+export const settings: CanvasSketchSettingsFunc = (canvas) => ({
+  canvas,
+  name: seed,
   pixelsPerInch: 300,
   scaleToView: true,
   units: "in",
-  name: seed,
 });
 
-/**
- * TODO: Make the Modulator values available to the Sketch.
- */
-export const sketch = ({ context, width, height }: SketchProps) => {
+export const sketch = () => ({ context, width, height }: SketchProps) => {
   random.setSeed(seed);
 
   const num = 30;
@@ -171,7 +169,8 @@ export const sketch = ({ context, width, height }: SketchProps) => {
   };
 };
 
-const visualPiece = {
+const visualPiece: VisualPiece = {
+  author: "Santiago Figueiras",
   title: "Skewed Rects",
   settings,
   sketch,

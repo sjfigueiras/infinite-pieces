@@ -1,8 +1,9 @@
 "use client";
 import { SketchProps } from "canvas-sketch";
-import { CanvasSketchSettings } from "../../components/Canvas";
+import { CanvasSketchSettingsFunc } from "../../components/Canvas";
+import { VisualPiece } from "../registry";
 
-export const settings: CanvasSketchSettings = (canvas) => ({
+export const settings: CanvasSketchSettingsFunc = (canvas) => ({
   animate: true,
   canvas,
   pixelsPerInch: 300,
@@ -11,9 +12,9 @@ export const settings: CanvasSketchSettings = (canvas) => ({
 });
 
 /**
- * TODO: Make the Modulator values available to the Sketch.
+ * TODO: Make the Modulator/AnalyserNode available to the Sketch.
  */
-export const sketch = () => {
+export const sketch = () => () => {
   return ({ context, width, height }: SketchProps) => {
     // Margin in inches
     const margin = 1 / 4;
@@ -44,3 +45,12 @@ export const sketch = () => {
     context.fill();
   };
 };
+
+const visualPiece: VisualPiece = {
+  author: "Santiago Figueiras",
+  title: "Nro. 1",
+  settings,
+  sketch,
+};
+
+export default visualPiece;

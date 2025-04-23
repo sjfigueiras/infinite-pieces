@@ -1,14 +1,14 @@
 import * as Tone from "tone";
 
-export function getRandomBetween(min: number, max: number): number {
-  return Math.random() * (max - min) + min;
-}
-
 export interface Modulator {
   analyser: Tone.Analyser;
   lfo: Tone.LFO;
   name: string;
   signal?: Tone.Signal;
+}
+
+export function getRandomBetween(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
 }
 
 export function scheduleRandomRepeat(

@@ -20,6 +20,7 @@ const eslintConfig = [
     plugins: ["prettier"], // Added Prettier plugin
     rules: {
       "prettier/prettier": "error", // Enforce Prettier formatting as ESLint errors
+      endOfLine: "auto", // Fix end-of-line issues
     },
   }),
 ];
