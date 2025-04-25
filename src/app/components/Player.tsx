@@ -99,7 +99,7 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
           </svg>
         )}
       </button>
-      
+
       <div className="flex items-center gap-2">
         <button
           onClick={toggleMute}
@@ -138,7 +138,7 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
             </svg>
           )}
         </button>
-        
+
         <input
           type="range"
           min="0"
@@ -149,12 +149,8 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
           className="w-24 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
         />
       </div>
-      
-      <audio
-        id="controls"
-        loop
-        src="/silence.mp3"
-      ></audio>
+
+      <audio id="controls" loop src="/silence.mp3"></audio>
     </section>
   );
 };

@@ -16,11 +16,15 @@ const webVitals = [
 const eslintConfig = [
   ...webVitals,
   ...compat.config({
-    extends: ["next", "prettier", "plugin:prettier/recommended"], // Added Prettier integration
-    plugins: ["prettier"], // Added Prettier plugin
+    extends: ["next", "prettier", "plugin:prettier/recommended"],
+    plugins: ["prettier"],
     rules: {
-      "prettier/prettier": "error", // Enforce Prettier formatting as ESLint errors
-      endOfLine: "auto", // Fix end-of-line issues
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
     },
   }),
 ];

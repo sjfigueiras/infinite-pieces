@@ -10,7 +10,9 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [visualPiece, setVisualPiece] = useState<VisualPiece | undefined>(
     undefined,
   );
-  const [audioComponent, setAudioComponent] = useState<HTMLAudioElement | undefined>(undefined);
+  const [audioComponent, setAudioComponent] = useState<
+    HTMLAudioElement | undefined
+  >(undefined);
 
   useEffect(() => {
     const loadSonicPieceEffect = async () => {
