@@ -42,7 +42,7 @@ const pieceRegistry: PieceRegistry = {
   },
   visual: {
     default: async () =>
-      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
+      (await import("./visual/skewed-rects")).default as VisualPiece,
   },
 };
 
