@@ -13,31 +13,20 @@ const lPan = new Tone.Panner(-1);
 const rPan = new Tone.Panner(1);
 
 const lSynth = new Tone.Synth({
-  oscillator: { type: 'sine' },
+  oscillator: { type: "sine" },
 }).connect(lPan);
 const rSynth = new Tone.Synth({
-  oscillator: { type: 'sine' },
+  oscillator: { type: "sine" },
 }).connect(rPan);
 
 const sub = () => {
-  lSynth.triggerAttackRelease('C1', 0.5, '+1');
-  rSynth.triggerAttackRelease('C1', 0.5, '+1.5');
+  lSynth.triggerAttackRelease("C1", 0.5, "+1");
+  rSynth.triggerAttackRelease("C1", 0.5, "+1.5");
 
   Tone.getTransport().scheduleOnce(() => {
     sub();
-  }, '+4');
+  }, "+4");
 };
-
-/**
- * TODO: Extract to utils file
- * @param arr 
- * @returns A random element from the array
- * @template T The type of the elements in the array
- */
-const getRandomElement = <T>(arr: T[]): T => {
-  const randomIndex = Math.floor(Math.random() * arr.length);
-  return arr[randomIndex];
-}
 
 const delay = new Tone.FeedbackDelay({
   feedback: 0.7,
@@ -60,7 +49,7 @@ const EQ = new Tone.EQ3({
   high: -12,
 });
 
-const EQLFO =  new Tone.LFO("1hz", 1000, 15000).start(); 
+const EQLFO = new Tone.LFO("1hz", 1000, 15000).start();
 EQLFO.connect(EQ.highFrequency);
 
 sub();
@@ -72,8 +61,8 @@ const synthLead = new Tone.Synth({
 
 scheduleRandomRepeat(
   (time) => {
-    synthLead.triggerAttack('E2', time, .5);
-    synthLead.frequency.rampTo('F#2', 0.011, time);
+    synthLead.triggerAttack("E2", time, 0.5);
+    synthLead.frequency.rampTo("F#2", 0.011, time);
   },
   20,
   60,
@@ -82,8 +71,8 @@ scheduleRandomRepeat(
 
 scheduleRandomRepeat(
   (time) => {
-    synthLead.triggerAttack('G#3', time, .5);
-    synthLead.frequency.rampTo('A#3', 0.01, time);
+    synthLead.triggerAttack("G#3", time, 0.5);
+    synthLead.frequency.rampTo("A#3", 0.01, time);
   },
   120,
   60,
@@ -96,8 +85,8 @@ synthLFO.connect(synthLead.detune);
 const upright = createUprightSampler();
 const melodia = ["C4", "E4", "G4", "B4", "C5"];
 
-var pitchShift = new Tone.PitchShift({
-  pitch: -5 // this is working and lowers pitch by a fifth
+const pitchShift = new Tone.PitchShift({
+  pitch: -5, // this is working and lowers pitch by a fifth
 });
 
 upright.connect(pitchShift);
@@ -105,7 +94,7 @@ pitchShift.connect(master);
 
 melodia.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       upright.triggerAttack(nota, time);
     },
     60,

@@ -2,7 +2,10 @@ import { SketchProps } from "canvas-sketch";
 import { CanvasSketchSettingsFunc } from "../../../components/Canvas";
 import { VisualPiece } from "../../registry";
 
-export const settings: CanvasSketchSettingsFunc = (_canvas, audioComponent) => ({
+export const settings: CanvasSketchSettingsFunc = (
+  _canvas,
+  audioComponent,
+) => ({
   animate: true,
   audioComponent,
   pixelsPerInch: 300,
@@ -15,44 +18,46 @@ let analyser: AnalyserNode | null = null;
 
 let manager;
 
-export const sketch: VisualPiece["sketch"] = (audioComponent) => ({ width, height }) => {
-  console.log({audioComponent});
+export const sketch: VisualPiece["sketch"] =
+  (audioComponent) =>
+  ({ width, height }) => {
+    console.log({ audioComponent });
 
-  // TODO: maybe we don't need the user interaction given they will
-  // interact in the first place with the player.
-  window.addEventListener("mouseup", () => {
-    if (!audioContext) {
-      if (audioComponent) {
-        createAudio(audioComponent as HTMLAudioElement);
-      } else {
-        console.error("Audio element not found");
+    // TODO: maybe we don't need the user interaction given they will
+    // interact in the first place with the player.
+    window.addEventListener("mouseup", () => {
+      if (!audioContext) {
+        if (audioComponent) {
+          createAudio(audioComponent as HTMLAudioElement);
+        } else {
+          console.error("Audio element not found");
+        }
       }
-    }
-  });
+    });
 
-  return ({ context }: SketchProps) => {
-    context.fillStyle = "white";
-    context.fillRect(0, 0, width, height);
-    
-    if (audioContext && analyser && audioData) {
-      analyser.getFloatFrequencyData(audioData);
+    return ({ context }: SketchProps) => {
+      context.fillStyle = "white";
+      context.fillRect(0, 0, width, height);
 
-      const avg = getAverage(audioData!);
+      if (audioContext && analyser && audioData) {
+        analyser.getFloatFrequencyData(audioData);
 
-      context.save();
-      context.translate(width * 0.5, height * 0.5);
-      context.lineWidth = 10;
+        const avg = getAverage(audioData!);
 
-      console.log(Math.abs(avg));
+        context.save();
+        context.translate(width * 0.5, height * 0.5);
+        context.lineWidth = 10;
 
-      context.beginPath();
-      context.arc(0, 0, Math.abs(avg), 0, Math.PI * 2);
-      context.stroke();
+        console.log(Math.abs(avg));
 
-      context.restore();
-    }
+        context.beginPath();
+        context.arc(0, 0, Math.abs(avg), 0, Math.PI * 2);
+        context.stroke();
+
+        context.restore();
+      }
+    };
   };
-};
 
 const visualPiece: VisualPiece = {
   author: "Santiago Figueiras",
@@ -89,6 +94,6 @@ const getAverage = (data: Float32Array) => {
   // // Normalize the average to a positive range
   // const normalizedAvg = avg + 130; // Assuming -130 is the minimum dB value
   // return normalizedAvg;
-}
+};
 
 export default visualPiece;

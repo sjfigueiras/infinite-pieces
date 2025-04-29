@@ -16,8 +16,10 @@ export interface CanvasSketchSettings {
   scaleToView?: boolean;
 }
 
-export type CanvasSketchSettingsFunc = 
-  (canvas?: HTMLCanvasElement, audioComponent?: HTMLAudioElement) => CanvasSketchSettings;
+export type CanvasSketchSettingsFunc = (
+  canvas?: HTMLCanvasElement,
+  audioComponent?: HTMLAudioElement,
+) => CanvasSketchSettings;
 
 export interface CanvasProps extends VisualPiece {
   audioComponent?: HTMLAudioElement;
