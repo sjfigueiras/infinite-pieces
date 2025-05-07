@@ -28,7 +28,7 @@ const bajosB = ["C2", "A1"];
 
 melodia.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       layerA.triggerAttack(nota, time);
     },
     10,
@@ -39,7 +39,7 @@ melodia.forEach((nota) => {
 
 texturasA.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       layerA.triggerAttack(nota, time);
     },
     60,
@@ -50,7 +50,7 @@ texturasA.forEach((nota) => {
 
 texturasB.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       layerA.triggerAttack(nota, time);
     },
     120,
@@ -61,7 +61,7 @@ texturasB.forEach((nota) => {
 
 bajosA.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       layerB.triggerAttack(nota, time);
     },
     60,
@@ -72,7 +72,7 @@ bajosA.forEach((nota) => {
 
 bajosB.forEach((nota) => {
   scheduleRandomRepeat(
-    (time)  =>{
+    (time) => {
       layerB.triggerAttack(nota, time);
     },
     120,

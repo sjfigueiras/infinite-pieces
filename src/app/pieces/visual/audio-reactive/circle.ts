@@ -1,6 +1,7 @@
 import { SketchProps } from "canvas-sketch";
 import { CanvasSketchSettingsFunc } from "../../../components/Canvas";
 import { VisualPiece } from "../../registry";
+import math from "canvas-sketch-util/math";
 
 export const settings: CanvasSketchSettingsFunc = (_canvas, analyser) => ({
   analyser,
@@ -14,7 +15,7 @@ let audioData: Float32Array | null = null;
 export const sketch: VisualPiece["sketch"] =
   (analyser) =>
   ({ width, height }) => {
-    console.log({ analyser });
+    const bins = [4, 3, 6, 12, 19];
 
     if (analyser && !audioData) {
       createAudio(analyser);
@@ -27,19 +28,30 @@ export const sketch: VisualPiece["sketch"] =
       if (analyser && audioData) {
         analyser.getFloatFrequencyData(audioData);
 
-        const avg = getAverage(audioData);
+        for (let i = 0; i < bins.length; i++) {
+          const bin = bins[i];
+          const mapped = math.mapRange(
+            audioData[bin],
+            analyser.minDecibels,
+            analyser.maxDecibels,
+            0,
+            1,
+            true,
+          );
+          const radius = mapped * 300;
 
-        context.save();
-        context.translate(width * 0.5, height * 0.5);
-        context.lineWidth = 10;
+          context.save();
+          context.translate(width * 0.5, height * 0.5);
+          context.lineWidth = 10;
 
-        console.log(Math.abs(avg));
+          context.beginPath();
+          context.arc(0, 0, radius, 0, Math.PI * 2);
+          context.stroke();
 
-        context.beginPath();
-        context.arc(0, 0, Math.abs(avg), 0, Math.PI * 2);
-        context.stroke();
+          context.restore();
+        }
 
-        context.restore();
+        // const avg = getAverage(audioData);
       }
     };
   };
@@ -53,21 +65,9 @@ const visualPiece: VisualPiece = {
 };
 
 const createAudio = (analyser: AnalyserNode) => {
+  analyser.fftSize = 256;
+  analyser.smoothingTimeConstant = 0.95;
   audioData = new Float32Array(analyser.frequencyBinCount);
-};
-
-const getAverage = (data: Float32Array) => {
-  let sum = 0;
-  for (let i = 0; i < data.length; i++) {
-    sum += data[i];
-  }
-  const avg = sum / data.length;
-
-  return avg;
-
-  // // Normalize the average to a positive range
-  // const normalizedAvg = avg + 130; // Assuming -130 is the minimum dB value
-  // return normalizedAvg;
 };
 
 export default visualPiece;

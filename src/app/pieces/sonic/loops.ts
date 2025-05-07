@@ -5,7 +5,7 @@ const synth = new Tone.Synth();
 
 const melodySynth = new Tone.AMSynth();
 
-const seq1 = new Tone.Sequence(
+new Tone.Sequence(
   (time, note) => {
     synth.triggerAttackRelease(note, 0.1, time);
     // subdivisions are given as subarrays
@@ -13,7 +13,7 @@ const seq1 = new Tone.Sequence(
   ["C3", ["E3", "D3", "E3"], "G3", ["A3", "G3"]],
 ).start(0);
 
-const seq2 = new Tone.Sequence(
+new Tone.Sequence(
   (time, note) => {
     synth.triggerAttackRelease(note, 0.8, time);
     // subdivisions are given as subarrays
@@ -21,7 +21,7 @@ const seq2 = new Tone.Sequence(
   ["C3", ["F#3", "E3", "F#3"], "A3", ["B3", "A3"]],
 ).start(1);
 
-const seq3 = new Tone.Sequence(
+new Tone.Sequence(
   (time, note) => {
     melodySynth.triggerAttackRelease(note, 1.1, time);
     // subdivisions are given as subarrays
@@ -52,6 +52,7 @@ Tone.getTransport().bpm.value = 40; // Set the BPM to 120
 Tone.getTransport().start();
 
 const loops: SonicPiece = {
+  author: "Santiago Figueiras",
   title: "Loops",
   modulators: [],
 };
