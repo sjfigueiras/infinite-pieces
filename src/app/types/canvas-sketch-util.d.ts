@@ -1,9 +1,10 @@
 declare module "canvas-sketch-util/random" {
   const random: {
-    setSeed(seed: unknown): unknown;
     getRandomSeed(): unknown;
-    range(min: number, max: number): number;
     pick<T>(array: T[]): T;
+    range(min: number, max: number): number;
+    rangeFloor: (min: number, max: number) => number;
+    setSeed(seed: unknown): unknown;
     value(): number;
     // Add other methods as needed
   };

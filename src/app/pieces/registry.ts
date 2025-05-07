@@ -40,14 +40,18 @@ const pieceRegistry: PieceRegistry = {
       (await import("./sonic/entusiasmo")).default as SonicPiece,
   },
   visual: {
+    animatedGrid: async () =>
+      (await import("./visual/animated-grid")).default as VisualPiece,
     circle: async () =>
       (await import("./visual/audio-reactive/circle")).default as VisualPiece,
     rects: async () =>
       (await import("./visual/skewed-rects")).default as VisualPiece,
-    animatedGrid: async () =>
-      (await import("./visual/animated-grid")).default as VisualPiece,
+    vintagePoster: async () =>
+      (await import("./visual/audio-reactive/vintage-poster"))
+        .default as VisualPiece,
     default: async () =>
-      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
+      (await import("./visual/audio-reactive/vintage-poster"))
+        .default as VisualPiece,
   },
 };
 
