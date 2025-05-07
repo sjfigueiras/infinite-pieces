@@ -3,7 +3,7 @@
 import { Piece, VisualPiece, loadPiece } from "../pieces/registry";
 import { useEffect, useState } from "react";
 import Player from "./Player";
-import Canvas from "./Canvas";
+import Canvas, { CanvasSketchManager } from "./Canvas";
 
 export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [loadedPiece, setLoadedPiece] = useState<Piece | undefined>(undefined);
@@ -13,6 +13,9 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [audioComponent, setAudioComponent] = useState<
     HTMLAudioElement | undefined
   >(undefined);
+
+  // TODO: add type for CanvasSketchManager
+  const [manager, setManager] = useState<CanvasSketchManager | null>(null);
 
   useEffect(() => {
     const loadSonicPieceEffect = async () => {
@@ -44,24 +47,45 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
     loadVisualPiece();
   }, []);
 
+  useEffect(() => {
+    if (manager) manager.pause();
+  }, [manager]);
+
+  const onPlay = () => {
+    if (manager) {
+      manager.play();
+    }
+  };
+
+  const onPause = () => {
+    if (manager) {
+      manager.pause();
+    }
+  };
+
   return (
     <div>
       <main>
         {visualPiece && audioComponent && (
           <Canvas
+            audioComponent={audioComponent}
             author={visualPiece.author}
-            title={visualPiece.title}
+            onPause={onPause}
+            onPlay={onPlay}
+            setManager={setManager}
             settings={visualPiece.settings}
             sketch={visualPiece.sketch}
-            audioComponent={audioComponent}
+            title={visualPiece.title}
           />
         )}
       </main>
       <footer className="inset-x-0 bottom-0 row-start-3 p-8 flex gap-[24px] flex-wrap items-center justify-center absolute">
         {loadedPiece && (
           <Player
-            piece={loadedPiece}
             audioComponent={audioComponent}
+            onPause={onPause}
+            onPlay={onPlay}
+            piece={loadedPiece}
             setAudioComponent={setAudioComponent}
           />
         )}

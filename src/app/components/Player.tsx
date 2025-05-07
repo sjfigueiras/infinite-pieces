@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { Piece } from "../pieces/registry";
 
 export interface PlayerProps {
-  piece: Piece;
   audioComponent?: HTMLAudioElement | null;
+  onPause: () => void;
+  onPlay: () => void;
+  piece: Piece;
   setAudioComponent: (audio: HTMLAudioElement) => void;
 }
 
-const Player = ({ piece, setAudioComponent }: PlayerProps) => {
+const Player = ({ onPause, onPlay, piece, setAudioComponent }: PlayerProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
@@ -17,7 +19,7 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
   useEffect(() => {
     const audio = document.querySelector("audio") as HTMLAudioElement;
     setAudioComponent(audio);
-  }, []);
+  }, [setAudioComponent]);
 
   useEffect(() => {
     console.log({ piece });
@@ -34,7 +36,6 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
      * volume change to Tone.
      */
     const gainToDb = Tone.gainToDb(volume);
-    console.log(gainToDb);
     Tone.getDestination().volume.value = gainToDb;
   }, [volume]);
 
@@ -47,12 +48,14 @@ const Player = ({ piece, setAudioComponent }: PlayerProps) => {
       Tone.getTransport().stop();
       Tone.getDestination().mute = true;
       setIsPlaying(false);
+      onPause();
     } else {
       Tone.getDestination().mute = false;
       Tone.getTransport().start();
       await Tone.start();
       await Tone.loaded();
       setIsPlaying(true);
+      onPlay();
     }
   };
 

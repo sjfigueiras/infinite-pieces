@@ -11,9 +11,10 @@ declare module "canvas-sketch" {
   interface SketchProps {
     audioComponent?: HTMLAudioElement;
     context: CanvasRenderingContext2D;
-    width: number;
     height: number;
+    playhead: number;
     time: number;
+    width: number;
   }
 
   type SketchFunction = (props: SketchProps) => void;
@@ -21,5 +22,5 @@ declare module "canvas-sketch" {
   export default function canvasSketch(
     sketch: SketchFunction,
     settings: SketchSettings,
-  ): void;
+  ): CanvasSketchManager;
 }

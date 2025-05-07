@@ -16,8 +16,6 @@ let audioContext: AudioContext | null = null;
 let audioData: Float32Array | null = null;
 let analyser: AnalyserNode | null = null;
 
-let manager;
-
 export const sketch: VisualPiece["sketch"] =
   (audioComponent) =>
   ({ width, height }) => {
