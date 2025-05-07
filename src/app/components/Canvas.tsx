@@ -27,37 +27,32 @@ export type CanvasSketchManager = {
 };
 
 export type CanvasSketchSettingsFunc = (
-  audioComponent?: HTMLAudioElement,
+  analyser?: AnalyserNode,
   canvas?: HTMLCanvasElement,
 ) => CanvasSketchSettings;
 
 export interface CanvasProps extends VisualPiece {
-  audioComponent?: HTMLAudioElement;
+  analyser?: AnalyserNode;
   onPause: () => void;
   onPlay: () => void;
   setManager: (manager: CanvasSketchManager) => void;
 }
 
-const Canvas = ({
-  settings,
-  sketch,
-  audioComponent,
-  setManager,
-}: CanvasProps) => {
+const Canvas = ({ analyser, settings, sketch, setManager }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
       const setupCanvas = async () => {
-        const manager = await canvasSketch(sketch(audioComponent), {
-          ...settings(audioComponent, canvasRef.current!),
+        const manager = await canvasSketch(sketch(analyser), {
+          ...settings(analyser, canvasRef.current!),
           canvas: canvasRef.current!,
         });
         setManager(manager);
       };
       setupCanvas();
     }
-  }, [settings, sketch, audioComponent, setManager]);
+  }, [settings, sketch, analyser, setManager]);
 
   return (
     <section>

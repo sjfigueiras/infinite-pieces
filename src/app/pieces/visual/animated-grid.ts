@@ -90,7 +90,7 @@ const visualPiece: VisualPiece = {
   author: "Matt DesLauriers",
   settings,
   sketch,
-  tags: ["grid", "lines", "animated"],
+  tags: ["grid", "lines", "animated", "starter"],
   title: "Animated Grid",
 };
 

@@ -17,7 +17,10 @@ interface Rect {
 
 const seed = random.getRandomSeed();
 
-export const settings: CanvasSketchSettingsFunc = (canvas) => ({
+export const settings: CanvasSketchSettingsFunc = (
+  _audioComponent,
+  canvas,
+) => ({
   canvas,
   name: seed,
   pixelsPerInch: 300,

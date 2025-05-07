@@ -14,7 +14,7 @@ export interface SonicPiece extends Piece {
 
 export interface VisualPiece extends Piece {
   settings: CanvasSketchSettingsFunc;
-  sketch: (audioComponent?: HTMLAudioElement) => (props: SketchProps) => void;
+  sketch: (analyser?: AnalyserNode) => (props: SketchProps) => void;
 }
 
 interface PieceRegistry {
@@ -47,7 +47,7 @@ const pieceRegistry: PieceRegistry = {
     animatedGrid: async () =>
       (await import("./visual/animated-grid")).default as VisualPiece,
     default: async () =>
-      (await import("./visual/animated-grid")).default as VisualPiece,
+      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
   },
 };
 

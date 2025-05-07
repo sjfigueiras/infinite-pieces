@@ -3,7 +3,10 @@ import { SketchProps } from "canvas-sketch";
 import { CanvasSketchSettingsFunc } from "../../components/Canvas";
 import { VisualPiece } from "../registry";
 
-export const settings: CanvasSketchSettingsFunc = (canvas) => ({
+export const settings: CanvasSketchSettingsFunc = (
+  _audioComponent,
+  canvas,
+) => ({
   animate: true,
   canvas,
   pixelsPerInch: 300,
