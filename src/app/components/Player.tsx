@@ -9,9 +9,16 @@ export interface PlayerProps {
   onPlay: () => void;
   piece: Piece;
   setAudioComponent: (audio: HTMLAudioElement) => void;
+  theme: "dark" | "light";
 }
 
-const Player = ({ onPause, onPlay, piece, setAudioComponent }: PlayerProps) => {
+const Player = ({
+  onPause,
+  onPlay,
+  piece,
+  setAudioComponent,
+  theme,
+}: PlayerProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
@@ -64,10 +71,16 @@ const Player = ({ onPause, onPlay, piece, setAudioComponent }: PlayerProps) => {
   };
 
   return (
-    <section className="flex items-center gap-4 bg-black/10 backdrop-blur-sm p-4 rounded-lg">
+    <section
+      className={`inline-flex items-center gap-4 p-4 rounded-lg ${
+        theme === "dark"
+          ? "bg-black/10 backdrop-blur-sm text-white"
+          : "bg-gray-100 text-black"
+      }`}
+    >
       <button
         onClick={togglePlay}
-        className="p-2 rounded-full hover:bg-black/20 transition-colors"
+        className="p-2 rounded-full hover:bg-opacity-20 transition-colors"
         aria-label={isPlaying ? "Pause" : "Play"}
       >
         {isPlaying ? (
@@ -106,7 +119,7 @@ const Player = ({ onPause, onPlay, piece, setAudioComponent }: PlayerProps) => {
       <div className="flex items-center gap-2">
         <button
           onClick={toggleMute}
-          className="p-2 rounded-full hover:bg-black/20 transition-colors"
+          className="p-2 rounded-full hover:bg-opacity-20 transition-colors"
           aria-label={muted ? "Unmute" : "Mute"}
         >
           {muted ? (
@@ -149,7 +162,11 @@ const Player = ({ onPause, onPlay, piece, setAudioComponent }: PlayerProps) => {
           step="0.01"
           value={volume}
           onChange={onVolumeChange}
-          className="w-24 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
+          className={`w-24 h-1 rounded-lg appearance-none cursor-pointer ${
+            theme === "dark"
+              ? "bg-gray-200 accent-white"
+              : "bg-gray-400 accent-black"
+          }`}
         />
       </div>
 

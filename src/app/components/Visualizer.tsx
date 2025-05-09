@@ -109,6 +109,7 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
             onPlay={onPlay}
             piece={loadedPiece}
             setAudioComponent={setAudioComponent}
+            theme="light"
           />
         )}
       </footer>
