@@ -40,6 +40,9 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   useEffect(() => {
     const loadVisualPiece = async () => {
       try {
+        /**
+         * TODO: replace hardcoded "default" with a dynamic piece name.
+         */
         const loadedVisualPiece = await loadPiece("visual", "default");
         if (loadedVisualPiece) {
           setVisualPiece(loadedVisualPiece as VisualPiece);

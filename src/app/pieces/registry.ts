@@ -17,37 +17,108 @@ export interface VisualPiece extends Piece {
   sketch: (analyser?: AnalyserNode) => (props: SketchProps) => void;
 }
 
-interface PieceRegistry {
-  [type: string]: {
-    [key: string]: () => Promise<SonicPiece | VisualPiece>;
-  };
+interface PieceMetadata {
+  title: string;
+  author: string;
+  state: "draft" | "public" | "private" | "archived";
+  tags?: string[];
 }
+
+export interface PieceEntry {
+  metadata: PieceMetadata;
+  loader: () => Promise<SonicPiece | VisualPiece>;
+}
+
+export type PieceType = "sonic" | "visual";
+
+export type PieceRegistry = {
+  [type in PieceType]: {
+    [key: string]: PieceEntry;
+  };
+};
 
 // Registry for dynamic imports
 const pieceRegistry: PieceRegistry = {
-  // Example: "pieceName": () => import("./path/to/piece"),
-  // Add mappings here
   sonic: {
-    entusiasmo: async () =>
-      (await import("./sonic/entusiasmo")).default as SonicPiece,
-    ondulado: async () =>
-      (await import("./sonic/ondulado")).default as SonicPiece,
-    sweep: async () => (await import("./sonic/sweep")).default as SonicPiece,
-    noisy: async () => (await import("./sonic/noisy")).default as SonicPiece,
-    loops: async () => (await import("./sonic/loops")).default as SonicPiece,
-    drone: async () => (await import("./sonic/drone")).default as SonicPiece,
-    default: async () =>
-      (await import("./sonic/entusiasmo")).default as SonicPiece,
+    entusiasmo: {
+      metadata: {
+        title: "Entusiasmo",
+        author: "Santiago Figueiras",
+        state: "public",
+        tags: ["energetic"],
+      },
+      loader: async () =>
+        (await import("./sonic/entusiasmo")).default as SonicPiece,
+    },
+    ondulado: {
+      metadata: {
+        title: "Ondulado",
+        author: "Santiago Figueiras",
+        state: "public",
+        tags: ["wave"],
+      },
+      loader: async () =>
+        (await import("./sonic/ondulado")).default as SonicPiece,
+    },
+    sweep: {
+      metadata: {
+        title: "Sweep",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["sweeping"],
+      },
+      loader: async () => (await import("./sonic/sweep")).default as SonicPiece,
+    },
+    noisy: {
+      metadata: {
+        title: "Noisy",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["noise"],
+      },
+      loader: async () => (await import("./sonic/noisy")).default as SonicPiece,
+    },
+    drone: {
+      metadata: {
+        title: "Drone",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["ambient"],
+      },
+      loader: async () => (await import("./sonic/drone")).default as SonicPiece,
+    },
   },
   visual: {
-    circle: async () =>
-      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
-    rects: async () =>
-      (await import("./visual/skewed-rects")).default as VisualPiece,
-    animatedGrid: async () =>
-      (await import("./visual/animated-grid")).default as VisualPiece,
-    default: async () =>
-      (await import("./visual/audio-reactive/circle")).default as VisualPiece,
+    circle: {
+      metadata: {
+        title: "Circle",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["reactive"],
+      },
+      loader: async () =>
+        (await import("./visual/audio-reactive/circle")).default as VisualPiece,
+    },
+    rects: {
+      metadata: {
+        title: "Skewed Rects",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["rects"],
+      },
+      loader: async () =>
+        (await import("./visual/skewed-rects")).default as VisualPiece,
+    },
+    animatedGrid: {
+      metadata: {
+        title: "Animated Grid",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["grid", "animation"],
+      },
+      loader: async () =>
+        (await import("./visual/animated-grid")).default as VisualPiece,
+    },
   },
 };
 
@@ -59,9 +130,29 @@ export async function loadPiece(
   if (!name) {
     throw new Error("Piece name is undefined");
   }
-  const loader = pieceRegistry[type][name];
-  if (!loader) {
+  const entry = pieceRegistry[type][name];
+  if (!entry) {
     throw new Error(`Piece "${name}" not found in the registry.`);
   }
-  return loader();
+  return entry.loader();
 }
+
+// Utility function to get metadata for a piece by name
+export function getPieceMetadata(
+  type: "sonic" | "visual",
+  name: string,
+): PieceMetadata | undefined {
+  return pieceRegistry[type][name]?.metadata;
+}
+
+export const getRegistry = () => pieceRegistry;
+
+export const getDefaultPiece = (type: PieceType): PieceEntry => {
+  if (type === "sonic") {
+    return pieceRegistry.sonic["entusiasmo"];
+  }
+  if (type === "visual") {
+    return pieceRegistry.visual["circle"];
+  }
+  throw new Error(`No default piece for type: ${type}`);
+};
