@@ -8,6 +8,8 @@ import Canvas, { CanvasSketchManager } from "./Canvas";
 // TODO: review if we want to have Tone as a dependency
 // at this level. This may be an abstraction leak.
 import * as Tone from "tone";
+import Catalog from "./Catalog";
+import Sidebar from "./Sidebar";
 
 export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   const [analyser, setAnalyser] = useState<AnalyserNode | undefined>(undefined);
@@ -91,6 +93,9 @@ export default function Visualizer({ pieceTitle }: { pieceTitle?: string }) {
   return (
     <div>
       <main>
+        <Sidebar>
+          <Catalog />
+        </Sidebar>
         {visualPiece && audioComponent && (
           <Canvas
             analyser={analyser}

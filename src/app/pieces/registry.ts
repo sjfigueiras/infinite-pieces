@@ -18,6 +18,7 @@ export interface VisualPiece extends Piece {
 }
 
 interface PieceMetadata {
+  id: string;
   title: string;
   author: string;
   state: "draft" | "public" | "private" | "archived";
@@ -42,6 +43,7 @@ const pieceRegistry: PieceRegistry = {
   sonic: {
     entusiasmo: {
       metadata: {
+        id: "entusiasmo",
         title: "Entusiasmo",
         author: "Santiago Figueiras",
         state: "public",
@@ -52,6 +54,7 @@ const pieceRegistry: PieceRegistry = {
     },
     ondulado: {
       metadata: {
+        id: "ondulado",
         title: "Ondulado",
         author: "Santiago Figueiras",
         state: "public",
@@ -62,6 +65,7 @@ const pieceRegistry: PieceRegistry = {
     },
     sweep: {
       metadata: {
+        id: "sweep",
         title: "Sweep",
         author: "Santiago Figueiras",
         state: "draft",
@@ -71,6 +75,7 @@ const pieceRegistry: PieceRegistry = {
     },
     noisy: {
       metadata: {
+        id: "noisy",
         title: "Noisy",
         author: "Santiago Figueiras",
         state: "draft",
@@ -80,6 +85,7 @@ const pieceRegistry: PieceRegistry = {
     },
     drone: {
       metadata: {
+        id: "drone",
         title: "Drone",
         author: "Santiago Figueiras",
         state: "draft",
@@ -91,6 +97,7 @@ const pieceRegistry: PieceRegistry = {
   visual: {
     circle: {
       metadata: {
+        id: "circle",
         title: "Circle",
         author: "Santiago Figueiras",
         state: "draft",
@@ -101,6 +108,7 @@ const pieceRegistry: PieceRegistry = {
     },
     rects: {
       metadata: {
+        id: "rects",
         title: "Skewed Rects",
         author: "Santiago Figueiras",
         state: "draft",
@@ -111,6 +119,7 @@ const pieceRegistry: PieceRegistry = {
     },
     animatedGrid: {
       metadata: {
+        id: "animatedGrid",
         title: "Animated Grid",
         author: "Santiago Figueiras",
         state: "draft",
@@ -132,7 +141,7 @@ export async function loadPiece(
   }
   const entry = pieceRegistry[type][name];
   if (!entry) {
-    throw new Error(`Piece "${name}" not found in the registry.`);
+    return getDefaultPiece(type).loader();
   }
   return entry.loader();
 }
@@ -140,9 +149,9 @@ export async function loadPiece(
 // Utility function to get metadata for a piece by name
 export function getPieceMetadata(
   type: "sonic" | "visual",
-  name: string,
+  id: string,
 ): PieceMetadata | undefined {
-  return pieceRegistry[type][name]?.metadata;
+  return pieceRegistry[type][id]?.metadata;
 }
 
 export const getRegistry = () => pieceRegistry;
