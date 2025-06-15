@@ -106,6 +106,17 @@ const pieceRegistry: PieceRegistry = {
       loader: async () =>
         (await import("./visual/audio-reactive/circle")).default as VisualPiece,
     },
+    poster: {
+      metadata: {
+        id: "poster",
+        title: "Poster",
+        author: "Santiago Figueiras",
+        state: "draft",
+        tags: ["poster", "visualization"],
+      },
+      loader: async () =>
+        (await import("./visual/audio-reactive/poster")).default as VisualPiece,
+    },
     rects: {
       metadata: {
         id: "rects",
@@ -156,12 +167,17 @@ export function getPieceMetadata(
 
 export const getRegistry = () => pieceRegistry;
 
+const DEFAULTS = {
+  sonic: "entusiasmo",
+  visual: "poster",
+};
+
 export const getDefaultPiece = (type: PieceType): PieceEntry => {
   if (type === "sonic") {
-    return pieceRegistry.sonic["entusiasmo"];
+    return pieceRegistry.sonic[DEFAULTS.sonic];
   }
   if (type === "visual") {
-    return pieceRegistry.visual["circle"];
+    return pieceRegistry.visual[DEFAULTS.visual];
   }
   throw new Error(`No default piece for type: ${type}`);
 };
