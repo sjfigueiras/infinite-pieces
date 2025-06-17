@@ -26,17 +26,22 @@ const rateLFO = new Tone.LFO({
   max: 2,
 }).start();
 
-// Create a reverb for space
+// Create filters for timbre variation
+const lowFilter = new Tone.Filter(200, "lowpass").toDestination();
+const highFilter = new Tone.Filter(2000, "highpass").toDestination();
+const bandFilter = new Tone.Filter(1000, "bandpass").toDestination();
+
+// Create a reverb for space with longer decay
 const reverb = new Tone.Reverb({
-  decay: 4,
-  wet: 0.4,
+  decay: 8,
+  wet: 0.6,
 }).toDestination();
 
 // Create a delay for texture
 const delay = new Tone.FeedbackDelay({
   delayTime: "8n",
-  feedback: 0.3,
-  wet: 0.2,
+  feedback: 0.4,
+  wet: 0.3,
 }).connect(reverb);
 
 // Connect the grain player to effects
@@ -55,10 +60,31 @@ const seq = new Tone.Sequence(
 
 // Function to trigger a granular burst
 const triggerGranularBurst = (time: number) => {
-  // Randomize parameters for each burst
-  grainPlayer.grainSize = Math.random() * 0.2 + 0.01;
-  grainPlayer.overlap = Math.random() * 0.4 + 0.1;
-  grainPlayer.playbackRate = Math.random() * 1.5 + 0.5;
+  // Randomize parameters for each burst with wider ranges
+  grainPlayer.grainSize = Math.random() * 0.4 + 0.01; // 0.01 to 0.41
+  grainPlayer.overlap = Math.random() * 0.8 + 0.1; // 0.1 to 0.9
+  grainPlayer.playbackRate = Math.random() * 3 + 0.25; // 0.25 to 3.25
+
+  // Randomly choose a filter configuration
+  const filterChoice = Math.floor(Math.random() * 3);
+  switch (filterChoice) {
+    case 0:
+      grainPlayer.disconnect();
+      grainPlayer.connect(lowFilter);
+      lowFilter.frequency.value = Math.random() * 1000 + 100; // 100 to 1100 Hz
+      break;
+    case 1:
+      grainPlayer.disconnect();
+      grainPlayer.connect(highFilter);
+      highFilter.frequency.value = Math.random() * 3000 + 500; // 500 to 3500 Hz
+      break;
+    case 2:
+      grainPlayer.disconnect();
+      grainPlayer.connect(bandFilter);
+      bandFilter.frequency.value = Math.random() * 2000 + 500; // 500 to 2500 Hz
+      bandFilter.Q.value = Math.random() * 10 + 2; // Q: 2 to 12
+      break;
+  }
 
   // Start the grain player
   grainPlayer.start(time);
@@ -70,8 +96,8 @@ const triggerGranularBurst = (time: number) => {
 
 // Schedule random granular bursts
 const scheduleRandomBursts = () => {
-  // Schedule the next burst
-  const nextTime = Tone.now() + Math.random() * 4 + 2; // Random time between 2-6 seconds
+  // Schedule the next burst with shorter intervals for more overlap
+  const nextTime = Tone.now() + Math.random() * 2 + 1; // Random time between 1-3 seconds
   triggerGranularBurst(nextTime);
 
   // Schedule the next burst
