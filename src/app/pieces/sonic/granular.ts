@@ -64,7 +64,7 @@ const triggerGranularBurst = (time: number) => {
   grainPlayer.start(time);
 
   // Stop after a random duration
-  const duration = Math.random() * 2 + 1;
+  const duration = Math.random() * 2 + 2;
   grainPlayer.stop(time + duration);
 };
 
