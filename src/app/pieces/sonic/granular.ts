@@ -94,11 +94,22 @@ const triggerGranularBurst = (time: number) => {
   grainPlayer.stop(time + duration);
 };
 
+// Variables for density modulation
+let hitCount = 0;
+const maxHits = 120; // 2 minutes worth of hits at max density
+
 // Schedule random granular bursts
 const scheduleRandomBursts = () => {
-  // Schedule the next burst with shorter intervals for more overlap
-  const nextTime = Tone.now() + Math.random() * 2 + 1; // Random time between 1-3 seconds
+  // Calculate density based on hit count
+  const progress = hitCount / maxHits;
+  const density = 3 - 2.5 * Math.sin(progress * Math.PI); // Goes from 3 to 0.5 and back
+
+  // Schedule the next burst using the density
+  const nextTime = Tone.now() + density;
   triggerGranularBurst(nextTime);
+
+  // Increment hit count
+  hitCount = (hitCount + 1) % maxHits;
 
   // Schedule the next burst
   Tone.Transport.scheduleOnce(() => {
